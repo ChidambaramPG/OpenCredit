@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/Credit"
+            android:icon="@drawable/ic_dashboard_black_24px"
+            android:iconTint="@color/colorAccent"
+            android:title="OVERVIEW" />
+
+        <item
+            android:id="@+id/Trends"
+            android:icon="@drawable/ic_timeline_black_24px"
+            android:iconTint="@color/colorAccent"
+            android:title="TRENDS" />
+        <item
+            android:id="@+id/MyAccount"
+            android:icon="@drawable/ic_person_black_24px"
+            android:iconTint="@color/colorAccent"
+            android:title="PROFILE" />
+
+        <item
+        android:id="@+id/Inventory"
+        android:icon="@drawable/ic_swap_horiz_black_24px"
+        android:title="INVENTORY" />
+
+        <!--<item-->
+            <!--android:id="@+id/Settings"-->
+            <!--android:icon="@drawable/ic_people_black_24px"-->
+            <!--android:title="CUSTOMERS" />-->
+    </group>
+
+
+</menu>

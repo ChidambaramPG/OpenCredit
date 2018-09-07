@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/user_details_lyt"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/card_background">
+
+    <ImageView
+        android:id="@+id/typeImg"
+        android:layout_width="23.88dp"
+        android:layout_height="25.07dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:padding="5dp"
+        app:srcCompat="@drawable/ic_credit_icon" />
+
+    <TextView
+        android:id="@+id/monthTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/balTxt"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="40dp"
+        android:text="Name"
+        android:textAllCaps="false"
+        android:textColor="#DE000000"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/yearTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/monthTxt"
+        android:layout_alignTop="@+id/typeImg"
+        android:layout_marginTop="15dp"
+        android:text="credit"
+        android:textAllCaps="false"
+        android:textColor="#8B000000" />
+
+    <TextView
+        android:id="@+id/balTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/balTxt2"
+        android:layout_alignTop="@+id/yearTxt"
+        android:text="250"
+        android:textColor="#8B000000"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/balTxt2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/monthTxt"
+        android:layout_marginRight="10dp"
+        android:layout_toStartOf="@+id/sendBtn"
+        android:text="date"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/sendBtn"
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/monthTxt"
+        android:layout_marginEnd="13dp"
+        android:background="@drawable/button_gradient"
+        android:text="Send"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textSize="8sp" />
+
+    <Button
+        android:id="@+id/markBtn"
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:layout_alignStart="@+id/sendBtn"
+        android:layout_below="@+id/monthTxt"
+        android:background="@drawable/button_accent_gradient"
+        android:text="Mark"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textSize="8sp" />
+</RelativeLayout>

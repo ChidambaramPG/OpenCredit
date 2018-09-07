@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "10570102768",
+    "firebase_url": "https://opencredit-cf2aa.firebaseio.com",
+    "project_id": "opencredit-cf2aa",
+    "storage_bucket": "opencredit-cf2aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10570102768:android:0c69a5dd12894684",
+        "android_client_info": {
+          "package_name": "chidhu.opencredit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "10570102768-oh0s1vsb90kragun1l17nefure4sa3f7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "chidhu.opencredit",
+            "certificate_hash": "adee88f2725b8e70ad070c11911248405ff998be"
+          }
+        },
+        {
+          "client_id": "10570102768-8bdrngf28p72137f8fnp5jvqv82am05v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvKT1Uo_WUiFw-MvBwz2Wo7oQSgk8d3Hs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "10570102768-8bdrngf28p72137f8fnp5jvqv82am05v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

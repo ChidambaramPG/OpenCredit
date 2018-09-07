@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="chidhu.opencredit.ContactSearchActivity">
+
+    <RelativeLayout
+        android:id="@+id/searchLyt"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/card_background">
+
+        <AutoCompleteTextView
+            android:id="@+id/contactSearchAutocomplete"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="5dp"
+            android:backgroundTint="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_person_add_black_24px"
+            android:drawablePadding="5dp"
+            android:drawableTint="#c2c0c0"
+            android:hint="Search Contacts"
+            android:maxLines="1"
+            android:minLines="1" />
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/loadProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchLyt"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="104dp">
+
+    </ProgressBar>
+
+    <TextView
+        android:id="@+id/msgTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="Please wait while loading contacts list" />
+
+</RelativeLayout>

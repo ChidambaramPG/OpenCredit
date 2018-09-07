@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/common_google_signin_btn_text_dark_default">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="49dp">
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/dateTxt"
+            android:layout_alignStart="@+id/amountTxt"
+            android:paddingLeft="10dp"
+            android:text="Amount"
+            android:textColor="@color/colorPrimary"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/amountTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/noteTxt"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:text="TextView"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/dateTxt"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:text="Date And Time"
+            android:textColor="@color/colorPrimary"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/dateTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/amountTxt"
+            android:layout_alignBottom="@+id/amountTxt"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            android:text="TextView"
+            android:textAlignment="viewEnd"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/timeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignStart="@+id/dateTxt"
+            android:layout_below="@+id/dateTxt"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="20dp"
+            android:text="TextView"
+            android:textAlignment="viewEnd"
+            android:textColor="@android:color/darker_gray" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/itemsList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView13"
+        android:background="#444242"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#e74c3c"
+        android:gravity="center_vertical|center_horizontal"
+        android:padding="20dp"
+        android:text="Bill Details"
+        android:textAllCaps="true"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="142dp"
+        android:paddingLeft="10dp"
+        android:text="Items"
+        android:textColor="@color/colorPrimary"
+        android:textSize="10sp" />
+</RelativeLayout>

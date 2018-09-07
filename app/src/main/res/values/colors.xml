@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimaryDark">#2f7fec</color>
+    <color name="colorPrimary">#2f7fec</color>
+    <color name="colorAccent">#e74c3c</color>
+    <color name="colorCredit">#3ce747</color>
+    <color name="colorDebit">#e74c3c</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBtnGradStrt">#3c8be8</color>
+    <color name="colorBtnGradMid">#4b76f1</color>
+    <color name="colorBtnGradEnd">#5863f9</color>
+    <color name="black">#000000</color>
+
+    <!--<color name="colorPrimaryDark">#533df7</color>-->
+    <!--<color name="colorPrimary">#533df7</color>-->
+    <!--<color name="colorAccent">#a126ce</color>-->
+
+    <!--<color name="colorBtnGradStrt">#533df7</color>-->
+    <!--<color name="colorBtnGradMid">#7e3df7</color>-->
+    <!--<color name="colorBtnGradEnd">#913df7</color>-->
+
+    <!--<color name="colorCredit">#a53ce7</color>-->
+    <!--<color name="colorDebit">#5b3ce7</color>-->
+    <!--<color name="colorWhite">#ffffff</color>-->
+
+</resources>

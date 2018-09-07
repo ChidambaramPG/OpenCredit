@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="chidhu.opencredit.SplashScreenActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="94dp"
+        app:srcCompat="@mipmap/ic_launcher_foreground" />
+
+    <TextView
+        android:id="@+id/open_credit"
+        android:layout_width="247dp"
+        android:layout_height="53dp"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="-40sp"
+        android:text="OPEN CREDIT"
+        android:textAppearance="@style/open_credit"
+        android:textColor="#000000"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/let_s_build"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/open_credit"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:alpha="0.54"
+        android:lineSpacingExtra="-12sp"
+        android:text="Let's Build Your Business Together"
+        android:textAppearance="@style/let_s_build"
+        android:gravity="center_horizontal"/>
+
+    <Button
+        android:id="@+id/getStrtedBtn"
+        android:layout_width="269dp"
+        android:layout_height="53dp"
+        android:layout_below="@+id/let_s_build"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp"
+        android:background="@drawable/button_gradient"
+        android:text="GET STARTED"
+        android:textColor="#ffffff"
+        android:textSize="26sp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/let_s_build"
+        android:layout_toEndOf="@+id/open_credit"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="-40sp"
+        android:text="."
+        android:textAppearance="@style/open_credit"
+        android:textColor="#5863f9"
+        android:textSize="40sp"
+        android:textStyle="bold"/>
+</RelativeLayout>

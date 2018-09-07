@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="years">
+        <item>2018</item>
+        <item>2019</item>
+        <item>2020</item>
+    </array>
+    <string-array name="ItemType">
+        <item>Goods</item>
+        <item>Service</item>
+    </string-array>
+    <string-array name="TaxRate">
+        <item>0%</item>
+        <item>0.1%</item>
+        <item>0.25%</item>
+        <item>3%</item>
+        <item>5%</item>
+        <item>12%</item>
+        <item>18%</item>
+        <item>28%</item>
+    </string-array>
+    <string-array name="Unit">
+        <item >BOU</item>
+        <item >Bags</item>
+        <item >Bale</item>
+        <item >Bottles</item>
+        <item >Boxes</item>
+        <item >Buckles</item>
+        <item >Bunches</item>
+        <item >Bundles</item>
+        <item >Cans</item>
+        <item >Carat</item>
+        <item >Cartons</item>
+        <item >Centimeter</item>
+        <item >Cubic Centimeter</item>
+        <item >Cubic Meter</item>
+        <item >Dozen</item>
+        <item >Drums</item>
+        <item >Grams</item>
+        <item >Great Gross</item>
+        <item >Gross</item>
+        <item >Gross Yards</item>
+        <item >Kilograms</item>
+        <item >Kiloliter</item>
+        <item >Kilometers</item>
+        <item >Meter</item>
+        <item >Metric Ton</item>
+        <item >Milliliters</item>
+        <item >Numbers</item>
+        <item >Others</item>
+        <item >Packs</item>
+        <item >Pairs</item>
+        <item >Pieces</item>
+        <item >Quintal</item>
+        <item >Rolls</item>
+        <item >Sets</item>
+        <item >Square Feet</item>
+        <item >Square Meter</item>
+        <item >Square Yards</item>
+        <item >Tablets</item>
+        <item >Ten Grams</item>
+        <item >Thousands</item>
+        <item >Tonnes</item>
+        <item >Tubes</item>
+        <item >US Gallons</item>
+        <item >Units</item>
+        <item >Yards</item>
+    </string-array>
+
+</resources>
