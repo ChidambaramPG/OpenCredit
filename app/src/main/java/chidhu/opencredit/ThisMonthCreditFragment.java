@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,6 +51,8 @@ public class ThisMonthCreditFragment extends Fragment {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
     List<Customer> customerList = new ArrayList<>();
+
+    AVLoadingIndicatorView avi;
 
     public ThisMonthCreditFragment() {
         // Required empty public constructor
@@ -134,6 +137,7 @@ public class ThisMonthCreditFragment extends Fragment {
                             creditTxt.setText("\u20B9"+String.valueOf(credit));
                             debitTxt.setText("\u20B9"+String.valueOf(debit));
                             balTxt.setText("\u20B9"+String.valueOf(-1 * bal));
+                            avi.hide();
 
                         }
 
@@ -175,6 +179,8 @@ public class ThisMonthCreditFragment extends Fragment {
         creditTxt = view.findViewById(R.id.creditTxtLabl);
         debitTxt = view.findViewById(R.id.debitTxt);
         balTxt = view.findViewById(R.id.balTxt2);
+        avi = view.findViewById(R.id.avProg);
+        avi.show();
         thisMonthCreditList = view.findViewById(R.id.thisMonthTransactionList);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         thisMonthCreditList.setLayoutManager(mLayoutManager);

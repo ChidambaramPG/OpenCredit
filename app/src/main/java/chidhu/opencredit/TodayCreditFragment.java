@@ -133,7 +133,7 @@ public class TodayCreditFragment extends Fragment{
                                     try {
                                         balTxt.setText("\u20B9" + String.valueOf(bal));
                                     }catch(Exception e){
-                                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
 
                                     System.out.println("modified count: "+cstCount);

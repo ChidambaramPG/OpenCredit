@@ -19,6 +19,7 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
         android:padding="5dp"
+        android:tint="@color/colorAccent"
         app:srcCompat="@drawable/ic_credit_icon" />
 
     <TextView

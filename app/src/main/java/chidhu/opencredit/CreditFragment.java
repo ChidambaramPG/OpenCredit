@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.wang.avi.AVLoadingIndicatorView;
+
 import static android.content.Context.MODE_PRIVATE;
 
 
@@ -33,6 +35,8 @@ public class CreditFragment extends Fragment {
     private TabLayout tabLayout;
 
     static SharedPreferences.Editor editor;
+
+
 
     public CreditFragment() {
         // Required empty public constructor
@@ -63,9 +67,11 @@ public class CreditFragment extends Fragment {
 
 
         tabLayout = view.findViewById(R.id.tab_layout);
+
         fragmentManager = getChildFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         mCreditPagerAdapter = new CreditPagerAdapter(fragmentManager,3);
+
 
         mViewPager = view.findViewById(R.id.container);
         mViewPager.setAdapter(mCreditPagerAdapter);

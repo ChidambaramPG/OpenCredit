@@ -37,7 +37,7 @@
             android:gravity="center_vertical"
             android:hint="100"
             android:inputType="number"
-            android:textColor="#d93728"
+            android:textColor="@color/colorAccent"
             android:textSize="18sp"
             android:textStyle="bold" />
 

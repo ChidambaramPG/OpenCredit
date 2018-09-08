@@ -45,6 +45,7 @@
             android:layout_centerVertical="true"
             android:layout_margin="15dp"
             android:tint="#f43232"
+            android:visibility="invisible"
             app:srcCompat="@drawable/ic_person_black_24px" />
     </RelativeLayout>
 

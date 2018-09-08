@@ -65,11 +65,7 @@ public class AddInventoryActivity extends AppCompatActivity {
 
                 for(DataSnapshot snap1:dataSnapshot.getChildren()){
                     Map<String, Object> val = (Map<String, Object>) snap1.getValue();
-
-
                     prodDescStr = (String) val.get("prodDesc");
-
-
                     System.out.println(prodDescStr + " :"+prodHSNStr + " :"+prodItemStr + " :"+prodCessStr + " :"+prodPurPricStr + " :"+prodSelPricStr + " :"+prodDiscntStr + " :"+prodQtyStr + " :"+prodItemNoteStr + " :"+prodTypeStr + " :"+prodGSTStr + " :"+prodUnitStr);
                     itemDescs.add(prodDescStr);
 

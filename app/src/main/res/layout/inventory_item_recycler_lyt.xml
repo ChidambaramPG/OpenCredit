@@ -17,7 +17,7 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="19dp"
         android:padding="5dp"
-        app:srcCompat="@drawable/ic_credit_icon" />
+        app:srcCompat="@drawable/ic_package" />
 
     <TextView
         android:id="@+id/itemNameTxt"
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/itemNameTxt"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="50dp"
         android:gravity="left"
         android:text="TextView"
         android:textAlignment="viewEnd"
@@ -60,10 +60,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/itemNameTxt"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="50dp"
         android:gravity="left"
         android:text="TextView"
         android:textAlignment="viewEnd" />
+
+    <ImageView
+        android:id="@+id/delBtn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:tint="@android:color/darker_gray"
+        app:srcCompat="@drawable/ic_delete" />
 
 
 </RelativeLayout>

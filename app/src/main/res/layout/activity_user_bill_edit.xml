@@ -36,16 +36,15 @@
         android:id="@+id/amountLyt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="154dp">
+        android:layout_below="@+id/itemsList"
+        android:layout_centerHorizontal="true">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/amountTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:hint="Amount"
             android:inputType="number"
             android:textSize="14sp" />
@@ -98,7 +97,10 @@
         android:id="@+id/itemsList"
         android:layout_width="match_parent"
         android:layout_height="289dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/amountLyt" />
+        android:layout_below="@+id/dateTxt"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp" />
 
 </RelativeLayout>
