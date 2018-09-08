@@ -48,8 +48,8 @@ public class CustomersFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MainActivity) getActivity())
-                .setActionBarTitle("CUSTOMERS");
+//        ((MainActivity) getActivity())
+//                .setActionBarTitle("CUSTOMERS");
 
         opDB = Room.databaseBuilder(getContext(),OpenCreditDatabase.class,"OpenCreditDB")
                 .fallbackToDestructiveMigration()

@@ -79,9 +79,6 @@ public class TrendsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((MainActivity) getActivity())
-                .setActionBarTitle("TRENDS");
-
         opDB = Room.databaseBuilder(getContext(),OpenCreditDatabase.class,"OpenCreditDB")
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries().build();

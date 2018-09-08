@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.pswd);
 
         if(mAuth.getCurrentUser()!=null){
-            Intent toWorkspaceIntent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent toWorkspaceIntent = new Intent(getApplicationContext(), BottomNavActivity.class);
             startActivity(toWorkspaceIntent);
             finish();
         }
@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                Intent toWorkspaceIntent = new Intent(getApplicationContext(), MainActivity.class);
+                                Intent toWorkspaceIntent = new Intent(getApplicationContext(), BottomNavActivity.class);
                                 startActivity(toWorkspaceIntent);
                                 finish();
 

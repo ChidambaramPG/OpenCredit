@@ -57,10 +57,6 @@ public class InventoryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MainActivity) getActivity())
-                .setActionBarTitle("INVENTORY");
-
-
 
         dbRef.child("INVENTORY").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -98,9 +94,8 @@ public class InventoryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity) getActivity())
-                .setActionBarTitle("INVENTORY");
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

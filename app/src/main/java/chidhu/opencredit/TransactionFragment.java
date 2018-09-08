@@ -44,8 +44,8 @@ public class TransactionFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
         }
-        ((MainActivity) getActivity())
-                .setActionBarTitle("TRANSACTIONS");
+//        ((MainActivity) getActivity())
+//                .setActionBarTitle("TRANSACTIONS");
 
     }
 
@@ -193,7 +193,7 @@ public class TransactionFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity) getActivity())
-                .setActionBarTitle("TRANSACTIONS");
+//        ((MainActivity) getActivity())
+//                .setActionBarTitle("TRANSACTIONS");
     }
 }

@@ -475,12 +475,12 @@ public class AddCreditActivity extends AppCompatActivity implements CalcDialog.C
 
                 if (creditTxt.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "No amount entered. Canceling user and transaction update.", Toast.LENGTH_SHORT).show();
-                    Intent returnToCreditPage = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent returnToCreditPage = new Intent(getApplicationContext(), BottomNavActivity.class);
                     startActivity(returnToCreditPage);
                     finish();
                 } else if (resultNumber == null) {
                     Toast.makeText(getApplicationContext(), "No user selected. Canceling user and transaction update.", Toast.LENGTH_SHORT).show();
-                    Intent returnToCreditPage = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent returnToCreditPage = new Intent(getApplicationContext(), BottomNavActivity.class);
                     startActivity(returnToCreditPage);
                     finish();
                 } else {
@@ -523,7 +523,7 @@ public class AddCreditActivity extends AppCompatActivity implements CalcDialog.C
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
 
-                                Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                                Intent i = new Intent(getApplicationContext(),BottomNavActivity.class);
                                 startActivity(i);
                             }
                         });
@@ -557,7 +557,7 @@ public class AddCreditActivity extends AppCompatActivity implements CalcDialog.C
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
 
-                                    Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                                    Intent i = new Intent(getApplicationContext(),BottomNavActivity.class);
                                     startActivity(i);
                                 }
                             });
@@ -592,7 +592,7 @@ public class AddCreditActivity extends AppCompatActivity implements CalcDialog.C
                                     .child(formattedTrnsTime).setValue(newTrans).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                                    Intent i = new Intent(getApplicationContext(),BottomNavActivity.class);
                                     startActivity(i);
                                 }
                             });

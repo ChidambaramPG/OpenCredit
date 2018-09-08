@@ -52,10 +52,7 @@ public class CreditFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MainActivity) getActivity())
-                .setActionBarTitle("OVERVIEW");
-
-        editor = getActivity().getSharedPreferences("OC_REM_TAB", MODE_PRIVATE).edit();
+                editor = getActivity().getSharedPreferences("OC_REM_TAB", MODE_PRIVATE).edit();
 
     }
 
@@ -207,8 +204,8 @@ public class CreditFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity) getActivity())
-                .setActionBarTitle("OVERVIEW");
+//        ((MainActivity) getActivity())
+//                .setActionBarTitle("OVERVIEW");
 //        SharedPreferences prefs = getActivity().getSharedPreferences("OC_REM_TAB", MODE_PRIVATE);
 //        mViewPager.setCurrentItem(prefs.getInt("tab_id",1));
     }

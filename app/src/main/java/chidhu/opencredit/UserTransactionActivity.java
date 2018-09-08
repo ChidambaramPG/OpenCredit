@@ -231,7 +231,7 @@ public class UserTransactionActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                Intent i = new Intent(this,MainActivity.class);
+                Intent i = new Intent(this,BottomNavActivity.class);
                 startActivity(i);
                 break;
             case R.id.action_delete:

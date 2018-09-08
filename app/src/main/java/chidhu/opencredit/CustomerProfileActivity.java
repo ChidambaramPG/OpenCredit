@@ -187,7 +187,7 @@ public class CustomerProfileActivity extends AppCompatActivity implements View.O
                             public void onClick(DialogInterface dialog, int id) {
                                 opDB.openCreditDAO().deleteByUserContactId(number);
                                 dialog.cancel();
-                                Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                                Intent i = new Intent(getApplicationContext(),BottomNavActivity.class);
                                 startActivity(i);
                                 finish();
                             }

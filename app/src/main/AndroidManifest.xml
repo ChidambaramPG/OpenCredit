@@ -74,7 +74,10 @@
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddInventoryActivity"></activity>
+        <activity android:name=".AddInventoryActivity" />
+        <activity
+            android:name=".BottomNavActivity"
+            android:label="@string/title_activity_bottom_nav"></activity>
     </application>
 
 </manifest>
