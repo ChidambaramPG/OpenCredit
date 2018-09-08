@@ -4,8 +4,12 @@ Uses
 2. Add credit and debit
 3. Add purchased items
 4. Notifying transactions to user through Whatsapp
+5. Manage INVENTORY
+6. Monthly reports
+7. Generate invoice
 
 How to use it
+
 1. Add a customer using phone number
 2. Add items in INVENTORY
 3. Add credit amount, add items, save
