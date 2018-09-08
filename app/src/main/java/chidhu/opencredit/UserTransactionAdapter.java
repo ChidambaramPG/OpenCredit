@@ -133,12 +133,13 @@ public class UserTransactionAdapter extends RecyclerView.Adapter<UserTransaction
                         editIntent.putExtra("date",transList.get(position).getDate());
                         editIntent.putExtra("time",transList.get(position).getTime());
                         editIntent.putExtra("amount",transList.get(position).getAmount());
-//                            editIntent.putExtra("note",transList.get(position).getNote());
+                        editIntent.putExtra("note",transList.get(position).getNote());
                         editIntent.putExtra("bill",transList.get(position).getBill());
                         ctx.startActivity(editIntent);
                     }
                 }
             });
+
             builder.setView(dialoglayout);
             builder.show();
             }

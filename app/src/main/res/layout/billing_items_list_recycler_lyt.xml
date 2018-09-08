@@ -42,9 +42,8 @@
             android:id="@+id/priceTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
             android:layout_marginStart="-67dp"
-            android:layout_marginTop="10dp"
             android:layout_toEndOf="@+id/textView32"
             android:text="Price"
             android:textAllCaps="true"
@@ -100,9 +99,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
             android:layout_marginEnd="67dp"
-            android:layout_marginTop="10dp"
             android:text="Price : "
             android:textAllCaps="true"
             android:textSize="12sp" />
@@ -117,6 +115,17 @@
             android:paddingLeft="5dp"
             android:text="0"
             android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/delItemBtn"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:elevation="10dp"
+            android:tint="@android:color/darker_gray"
+            app:srcCompat="@drawable/ic_delete" />
     </RelativeLayout>
 
     <RelativeLayout

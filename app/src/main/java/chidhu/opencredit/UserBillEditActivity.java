@@ -13,6 +13,8 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.Menu;
@@ -31,7 +33,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -41,10 +48,14 @@ public class UserBillEditActivity extends AppCompatActivity {
     TextView dateTxt,timeTxt,billStatTxt;
     TextInputEditText noteTxt, amntTxt;
     ImageView billImg;
+    RecyclerView addedItems;
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
 
+    ArrayList<BillingItems> billing_items = new ArrayList<>();
+    AddedItemsAdapter adapter;
+    Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +76,8 @@ public class UserBillEditActivity extends AppCompatActivity {
         note = billDetails.getStringExtra("note");
         bill = billDetails.getStringExtra("bill");
 
+
+
         SpannableString s = new SpannableString("EDIT BILL");
         s.setSpan(new chidhu.opencredit.TypefaceSpan(this, "Oswald-Regular.ttf"), 0, s.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -72,24 +85,36 @@ public class UserBillEditActivity extends AppCompatActivity {
 
         dateTxt = findViewById(R.id.dateTxt);
         timeTxt = findViewById(R.id.timeTxt);
-        noteTxt = findViewById(R.id.noteTxt);
+//        noteTxt = findViewById(R.id.noteTxt);
         amntTxt = findViewById(R.id.amountTxt);
-        billImg = findViewById(R.id.billImg);
-        billStatTxt = findViewById(R.id.billStatTxt);
+
+        addedItems = findViewById(R.id.itemsList);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        addedItems.setLayoutManager(mLayoutManager);
 
         dateTxt.setText(date);
         timeTxt.setText(time);
-        noteTxt.setText(note);
+//        noteTxt.setText(note);
         amntTxt.setText(amount);
 
-        if(bill.isEmpty()){
-            billImg.setVisibility(View.GONE);
-            billStatTxt.setVisibility(View.VISIBLE);
-        }else{
-            Picasso.get().load(bill).into(billImg);
-            billStatTxt.setVisibility(View.GONE);
-        }
+        if(note == null ){
+            System.out.println("No items");
 
+            billing_items.clear();
+//                adapter = new AddedItemsAdapter(billing_items,ctx);
+//                addedItems.setAdapter(adapter);
+            System.out.println(billing_items.size());
+        }else{
+            System.out.println("Items Present");
+            gson = new Gson();
+            Type listType = new TypeToken<ArrayList<BillingItems>>(){}.getType();
+            billing_items = gson.fromJson(note, listType);
+
+            adapter = new AddedItemsAdapter(billing_items,this);
+            addedItems.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+
+        }
 
     }
 
@@ -124,7 +149,7 @@ public class UserBillEditActivity extends AppCompatActivity {
 
                 }else{
                     Transaction modif = new Transaction(date,time,amntTxt.getText().toString()
-                            ,type,uname,number,month,year,noteTxt.getText().toString(),bill,"false");
+                            ,type,uname,number,month,year,gson.toJson(billing_items),bill,"false");
 
                     dbRef.child("TRANSACTIONS").child(user.getUid()).child(number).child(year).child(month)
                             .child(date).child(time).setValue(modif).addOnCompleteListener(new OnCompleteListener<Void>() {

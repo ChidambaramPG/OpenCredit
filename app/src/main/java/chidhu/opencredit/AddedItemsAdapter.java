@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
@@ -46,6 +48,16 @@ public class AddedItemsAdapter extends RecyclerView.Adapter<AddedItemsAdapter.My
         holder.tax.setText(item.getItmTax());
         holder.discount.setText(item.getItmDiscount());
 
+        holder.delt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemsList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position,itemsList.size());
+                Toast.makeText(ctx, "Removed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     @Override
@@ -58,6 +70,7 @@ public class AddedItemsAdapter extends RecyclerView.Adapter<AddedItemsAdapter.My
 
         RelativeLayout itmLyt,expandableLayout;
         boolean expanded = false;
+        ImageView delt;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -72,6 +85,8 @@ public class AddedItemsAdapter extends RecyclerView.Adapter<AddedItemsAdapter.My
             price = itemView.findViewById(R.id.itemIndPricExpTxt);
             tax = itemView.findViewById(R.id.itmTaxExpTxt2);
             discount = itemView.findViewById(R.id.discountExpTxt2);
+
+            delt = itemView.findViewById(R.id.delItemBtn);
 
 
         }

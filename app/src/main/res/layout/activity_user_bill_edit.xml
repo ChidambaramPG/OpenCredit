@@ -33,6 +33,7 @@
         tools:layout_editor_absoluteY="62dp" />
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/amountLyt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -57,12 +58,6 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/noteTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Note"
-            android:textSize="14sp" />
     </android.support.design.widget.TextInputLayout>
 
     <TextView
@@ -78,16 +73,6 @@
         android:textAllCaps="true"
         android:textColor="#ffffff"
         android:textStyle="bold" />
-
-    <ImageView
-        android:id="@+id/billImg"
-        android:layout_width="333dp"
-        android:layout_height="194dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:paddingBottom="10dp"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_camera_alt_black_24px" />
 
     <TextView
         android:id="@+id/textView17"
@@ -109,12 +94,11 @@
         android:text="Time"
         android:textColor="@color/colorPrimary" />
 
-    <TextView
-        android:id="@+id/billStatTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="99dp"
-        android:text="No Bill Image Included" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/itemsList"
+        android:layout_width="match_parent"
+        android:layout_height="289dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/amountLyt" />
+
 </RelativeLayout>
