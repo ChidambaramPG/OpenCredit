@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainLyt"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <TextView
+        android:id="@+id/shopNameTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="14dp"
+        android:text="PVR"
+        android:textAllCaps="true"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/headerHr"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/shopNameTxt"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorAccent">
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textView25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/shopNameTxt"
+        android:layout_alignEnd="@+id/amntTxt"
+        android:text="#INV : 20202020" />
+
+    <TextView
+        android:id="@+id/textView30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/iemsList"
+        android:layout_marginEnd="96dp"
+        android:layout_marginTop="20dp"
+        android:text="Total Amount :" />
+
+    <TextView
+        android:id="@+id/amntTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/textView30"
+        android:layout_marginEnd="21dp"
+        android:layout_marginTop="20dp"
+        android:text="TextView" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/iemsList"
+        android:layout_width="match_parent"
+        android:layout_height="347dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/headerHr"
+        android:layout_margin="10dp" />
+
+</RelativeLayout>

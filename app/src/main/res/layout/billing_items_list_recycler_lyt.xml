@@ -23,20 +23,19 @@
     <RelativeLayout
         android:id="@+id/itemDetLyt"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:gravity="center_vertical">
 
         <TextView
             android:id="@+id/nmeTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="5dp"
-            android:layout_toEndOf="@+id/textView27"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/relativeLayout"
             android:paddingLeft="5dp"
             android:text="Test 01"
             android:textAllCaps="true"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/priceTxt"
@@ -45,10 +44,11 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="-67dp"
             android:layout_toEndOf="@+id/textView32"
-            android:text="Price"
+            android:paddingLeft="5dp"
+            android:text="0"
             android:textAllCaps="true"
-            android:textColor="@color/colorAccent"
-            android:textSize="12sp" />
+            android:textSize="10sp"
+            android:textStyle="bold" />
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
@@ -73,26 +73,16 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/textView27"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_toEndOf="@+id/relativeLayout"
-            android:text="Item :"
-            android:textAllCaps="true"
-            android:textSize="12sp" />
-
-        <TextView
             android:id="@+id/textView29"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/textView27"
-            android:layout_marginBottom="5dp"
-            android:text="No : "
-            android:textAllCaps="true"
-            android:textSize="12sp" />
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/textView32"
+            android:layout_marginTop="5dp"
+            android:text="Units :"
+            android:textAllCaps="false"
+            android:textSize="10sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView32"
@@ -100,21 +90,23 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="67dp"
-            android:text="Price : "
-            android:textAllCaps="true"
-            android:textSize="12sp" />
+            android:layout_marginEnd="70dp"
+            android:text="Unit Price : "
+            android:textAllCaps="false"
+            android:textSize="10sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/quantityTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
-            android:layout_toEndOf="@+id/textView29"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/priceTxt"
+            android:layout_marginTop="5dp"
             android:paddingLeft="5dp"
             android:text="0"
-            android:textSize="12sp" />
+            android:textSize="10sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/delItemBtn"
@@ -124,8 +116,32 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:elevation="10dp"
-            android:tint="@android:color/darker_gray"
+            android:tint="@android:color/holo_red_dark"
             app:srcCompat="@drawable/ic_delete" />
+
+        <TextView
+            android:id="@+id/textView22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/textView29"
+            android:layout_marginBottom="5dp"
+            android:text="Total : "
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/totAmntTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/priceTxt"
+            android:layout_marginBottom="5dp"
+            android:paddingLeft="5dp"
+            android:text="0"
+            android:textColor="@color/colorAccent"
+            android:textSize="10sp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <RelativeLayout

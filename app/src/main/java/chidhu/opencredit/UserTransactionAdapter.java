@@ -2,15 +2,18 @@ package chidhu.opencredit;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +24,11 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.hendrix.pdfmyxml.PdfDocument;
+import com.hendrix.pdfmyxml.viewRenderer.AbstractViewRenderer;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -63,7 +69,9 @@ public class UserTransactionAdapter extends RecyclerView.Adapter<UserTransaction
 
         if(transList.get(position).getTransType().equals("debit")){
             holder.typeImg.setImageDrawable(ctx.getDrawable(R.drawable.ic_debit_icon));
+            holder.typeImg.setColorFilter(R.color.colorBtnGradStrt);
         }
+
         holder.lyt.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("RestrictedApi")
             @Override
@@ -139,6 +147,63 @@ public class UserTransactionAdapter extends RecyclerView.Adapter<UserTransaction
                     }
                 }
             });
+            builder.setNeutralButton("PRINT", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                    AbstractViewRenderer page = new AbstractViewRenderer(ctx, R.layout.print_single_bill) {
+//                        private String _text;
+//
+//                        public void setText(String text) {
+//                            _text = text;
+//                        }
+
+                        @Override
+                        protected void initView(View view) {
+                            TextView amount = view.findViewById(R.id.amntTxt);
+                            amount.setText(transList.get(position).getAmount());
+                        }
+                    };
+
+                    PdfDocument doc = new PdfDocument(ctx);
+
+                    doc.addPage(page);
+
+                    doc.setRenderWidth(500);
+                    doc.setRenderHeight(1205);
+                    doc.setOrientation(PdfDocument.A4_MODE.PORTRAIT);
+                    doc.setProgressTitle(R.string.gen_please_wait);
+                    doc.setProgressMessage(R.string.gen_pdf_file);
+                    doc.setFileName("Test");
+                    doc.setSaveDirectory(ctx.getExternalFilesDir(null));
+                    doc.setInflateOnMainThread(false);
+
+                    doc.setListener(new PdfDocument.Callback() {
+                        @Override
+                        public void onComplete(File file) {
+                            Log.i(PdfDocument.TAG_PDF_MY_XML, "Complete");
+                            Intent target = new Intent(Intent.ACTION_VIEW);
+                            target.setDataAndType(Uri.fromFile(file),"application/pdf");
+                            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+                            Intent intent = Intent.createChooser(target, "Open File");
+                            try {
+                                ctx.startActivity(intent);
+                            } catch (ActivityNotFoundException e) {
+                                // Instruct the user to install a PDF reader here, or something
+                            }
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Log.i(PdfDocument.TAG_PDF_MY_XML, "Error");
+                        }
+                    });
+
+                    doc.createPdf(ctx);
+                }
+            });
+
 
             builder.setView(dialoglayout);
             builder.show();

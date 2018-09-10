@@ -15,7 +15,7 @@
         android:layout_height="25.07dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="19dp"
+        android:layout_marginStart="10dp"
         android:padding="5dp"
         app:srcCompat="@drawable/ic_package" />
 
@@ -68,11 +68,11 @@
     <ImageView
         android:id="@+id/delBtn"
         android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_height="15dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
-        android:tint="@android:color/darker_gray"
+        android:tint="@android:color/holo_red_dark"
         app:srcCompat="@drawable/ic_delete" />
 
 

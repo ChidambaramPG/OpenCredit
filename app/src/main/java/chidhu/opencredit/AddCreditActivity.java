@@ -315,17 +315,23 @@ public class AddCreditActivity extends AppCompatActivity implements CalcDialog.C
 
                             if(item != null){
 //                                System.out.println(item.getProdDesc());
-                                float totPrice = Float.valueOf(item.getProdSelPric()) * Float.valueOf(qty.getText().toString());
+//                                float totPrice = Float.valueOf(item.getProdSelPric()) * Float.valueOf(qty.getText().toString());
 //                                float totPrice = 0;
                                 billing_items.add(new BillingItems(item.getProdDesc(),
-                                        item.getProdHSN(),String.valueOf(totPrice),qty.getText().toString(),
+                                        item.getProdHSN(),String.valueOf(item.getProdSelPric()),qty.getText().toString(),
                                         item.getProdSelPric(),dsc.getText().toString(),item.getProdGST()));
-                                System.out.println(billing_items.size());
-                                totPrice = 0;
+
+                                System.out.println(billing_items);
+
+                                float totalPrice = 0;
+
                                 for(int i = 0;i<billing_items.size();i++){
-                                    totPrice =totPrice + (Float.valueOf((Float.valueOf(billing_items.get(i).getItemPrice()) *  Float.valueOf(qty.getText().toString())) -(Float.valueOf(billing_items.get(i).getItemPrice()) * (Float.valueOf(billing_items.get(i).getItmDiscount())/100))));
+                                    totalPrice = totalPrice + (Float.valueOf((Float.valueOf(billing_items.get(i).getItemPrice()) *  Float.valueOf(qty.getText().toString())) -(Float.valueOf(billing_items.get(i).getItemPrice()) * (Float.valueOf(billing_items.get(i).getItmDiscount())/100))));
                                 }
-                                creditTxt.setText(String.valueOf(totPrice));
+
+                                System.out.println(totalPrice);
+
+                                creditTxt.setText(String.valueOf(totalPrice));
                                 System.out.println(creditTxt.getText());
                                 adapter.notifyDataSetChanged();
                                 dialog.dismiss();
@@ -522,9 +528,39 @@ public class AddCreditActivity extends AppCompatActivity implements CalcDialog.C
                                 .child(formattedTrnsTime).setValue(newTrans).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
+                                if(billing_items.size()>0){
+                                    for(int j=0;j<billing_items.size();j++){
+                                        final BillingItems item = billing_items.get(j);
+                                        final int qtyBought = Integer.valueOf(item.getItemQty());
+                                        final int[] qtyInStock = {0};
+                                        dbRef.child("INVENTORY").child(user.getUid()).child(item.getItemName()).child("prodQty").addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                System.out.println(dataSnapshot.getValue());
+                                                qtyInStock[0] = (int) dataSnapshot.getValue();
+                                                dbRef.child("INVENTORY").child(user.getUid()).child(item.getItemName()).child("prodQty").setValue(String.valueOf(qtyInStock[0]-qtyBought)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        Intent i = new Intent(getApplicationContext(),BottomNavActivity.class);
+                                                        startActivity(i);
+                                                    }
+                                                });
+                                            }
 
-                                Intent i = new Intent(getApplicationContext(),BottomNavActivity.class);
-                                startActivity(i);
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+
+                                    }
+
+                                }else{
+                                    Intent i = new Intent(getApplicationContext(),BottomNavActivity.class);
+                                    startActivity(i);
+                                }
+
+
                             }
                         });
                     } else {
@@ -557,8 +593,37 @@ public class AddCreditActivity extends AppCompatActivity implements CalcDialog.C
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
 
-                                    Intent i = new Intent(getApplicationContext(),BottomNavActivity.class);
-                                    startActivity(i);
+                                    if(billing_items.size()>0){
+                                        for(int j=0;j<billing_items.size();j++){
+                                            final BillingItems item = billing_items.get(j);
+                                            final int qtyBought = Integer.valueOf(item.getItemQty());
+                                            final int[] qtyInStock = {0};
+                                            dbRef.child("INVENTORY").child(user.getUid()).child(item.getItemName()).child("prodQty").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    System.out.println(dataSnapshot.getValue());
+                                                    qtyInStock[0] = Integer.valueOf(dataSnapshot.getValue().toString());
+                                                    dbRef.child("INVENTORY").child(user.getUid()).child(item.getItemName()).child("prodQty").setValue(String.valueOf(qtyInStock[0]-qtyBought)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            Intent i = new Intent(getApplicationContext(),BottomNavActivity.class);
+                                                            startActivity(i);
+                                                        }
+                                                    });
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
+
+                                        }
+
+                                    }else{
+                                        Intent i = new Intent(getApplicationContext(),BottomNavActivity.class);
+                                        startActivity(i);
+                                    }
                                 }
                             });
 
@@ -592,8 +657,37 @@ public class AddCreditActivity extends AppCompatActivity implements CalcDialog.C
                                     .child(formattedTrnsTime).setValue(newTrans).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    Intent i = new Intent(getApplicationContext(),BottomNavActivity.class);
-                                    startActivity(i);
+                                    if(billing_items.size()>0){
+                                        for(int j=0;j<billing_items.size();j++){
+                                            final BillingItems item = billing_items.get(j);
+                                            final int qtyBought = Integer.valueOf(item.getItemQty());
+                                            final int[] qtyInStock = {0};
+                                            dbRef.child("INVENTORY").child(user.getUid()).child(item.getItemName()).child("prodQty").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    System.out.println(dataSnapshot.getValue());
+                                                    qtyInStock[0] = (int) dataSnapshot.getValue();
+                                                    dbRef.child("INVENTORY").child(user.getUid()).child(item.getItemName()).child("prodQty").setValue(String.valueOf(qtyInStock[0]-qtyBought)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            Intent i = new Intent(getApplicationContext(),BottomNavActivity.class);
+                                                            startActivity(i);
+                                                        }
+                                                    });
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
+
+                                        }
+
+                                    }else{
+                                        Intent i = new Intent(getApplicationContext(),BottomNavActivity.class);
+                                        startActivity(i);
+                                    }
                                 }
                             });
                         }

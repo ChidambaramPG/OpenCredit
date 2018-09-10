@@ -47,6 +47,7 @@ public class AddedItemsAdapter extends RecyclerView.Adapter<AddedItemsAdapter.My
         holder.price.setText("\u20B9" + item.getItmUnitPrice());
         holder.tax.setText(item.getItmTax());
         holder.discount.setText(item.getItmDiscount());
+        holder.totAmnt.setText("\u20B9"+(Float.parseFloat(item.getItmUnitPrice()) * Float.parseFloat(item.getItemQty())));
 
         holder.delt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +67,7 @@ public class AddedItemsAdapter extends RecyclerView.Adapter<AddedItemsAdapter.My
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView prodDesc,prodQty,prodPric,slNo,nme,price,tax,discount;
+        TextView prodDesc,prodQty,prodPric,slNo,nme,price,tax,discount,totAmnt;
 
         RelativeLayout itmLyt,expandableLayout;
         boolean expanded = false;
@@ -77,6 +78,7 @@ public class AddedItemsAdapter extends RecyclerView.Adapter<AddedItemsAdapter.My
             prodDesc = itemView.findViewById(R.id.nmeTxt);
             prodQty = itemView.findViewById(R.id.quantityTxt);
             prodPric = itemView.findViewById(R.id.priceTxt);
+            totAmnt = itemView.findViewById(R.id.totAmntTxt);
             expandableLayout = itemView.findViewById(R.id.expandable_layout);
             itmLyt = itemView.findViewById(R.id.item_lyt);
 
