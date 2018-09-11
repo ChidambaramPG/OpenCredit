@@ -2,18 +2,13 @@ package chidhu.opencredit;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,17 +17,39 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.hendrix.pdfmyxml.PdfDocument;
-import com.hendrix.pdfmyxml.viewRenderer.AbstractViewRenderer;
-import com.squareup.picasso.Picasso;
+import com.itextpdf.text.Anchor;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Chapter;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.Section;
+import com.itextpdf.text.TabSettings;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.VerticalPositionMark;
+import com.karumi.dexter.Dexter;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.FileOutputStream;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import static com.itextpdf.text.Annotation.FILE;
+import static com.itextpdf.text.Element.ALIGN_LEFT;
 
 /**
  * Author   : Chidambaram P G
@@ -47,6 +64,8 @@ public class UserTransactionAdapter extends RecyclerView.Adapter<UserTransaction
     AlertDialog.Builder builder;
     ArrayList<BillingItems> billing_items = new ArrayList<>();
     AddedItemsAdapter adapter;
+    static FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    Date c;
 
 
     public UserTransactionAdapter(List<Transaction> transList, Context ctx) {
@@ -151,56 +170,34 @@ public class UserTransactionAdapter extends RecyclerView.Adapter<UserTransaction
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
 
-                    AbstractViewRenderer page = new AbstractViewRenderer(ctx, R.layout.print_single_bill) {
-//                        private String _text;
-//
-//                        public void setText(String text) {
-//                            _text = text;
-//                        }
 
-                        @Override
-                        protected void initView(View view) {
-                            TextView amount = view.findViewById(R.id.amntTxt);
-                            amount.setText(transList.get(position).getAmount());
-                        }
-                    };
 
-                    PdfDocument doc = new PdfDocument(ctx);
+                    try {
 
-                    doc.addPage(page);
+                        File path = null;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.FROYO) {
+                            path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+                            File file = new File(path, "/" + transList.get(position).getTime()+".pdf");
+                            System.out.println("Writing to"+ file.getAbsolutePath());
+                            Document document = new Document();
+                            PdfWriter.getInstance(document, new FileOutputStream(file));
+                            document.open();
+//                            Rectangle two = new Rectangle(700,400);
+//                            document.setPageSize(two);
+//                            document.setMargins(20, 20, 20, 20);
+                            addMetaData(document,transList.get(position));
+                            addTitlePage(document,transList.get(position));
+                            addContent(document,transList.get(position));
+                            addBottom(document,transList.get(position));
 
-                    doc.setRenderWidth(500);
-                    doc.setRenderHeight(1205);
-                    doc.setOrientation(PdfDocument.A4_MODE.PORTRAIT);
-                    doc.setProgressTitle(R.string.gen_please_wait);
-                    doc.setProgressMessage(R.string.gen_pdf_file);
-                    doc.setFileName("Test");
-                    doc.setSaveDirectory(ctx.getExternalFilesDir(null));
-                    doc.setInflateOnMainThread(false);
+                            document.close();
 
-                    doc.setListener(new PdfDocument.Callback() {
-                        @Override
-                        public void onComplete(File file) {
-                            Log.i(PdfDocument.TAG_PDF_MY_XML, "Complete");
-                            Intent target = new Intent(Intent.ACTION_VIEW);
-                            target.setDataAndType(Uri.fromFile(file),"application/pdf");
-                            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-
-                            Intent intent = Intent.createChooser(target, "Open File");
-                            try {
-                                ctx.startActivity(intent);
-                            } catch (ActivityNotFoundException e) {
-                                // Instruct the user to install a PDF reader here, or something
-                            }
+                            Toast.makeText(ctx, "File saved to your Documents folder", Toast.LENGTH_SHORT).show();
                         }
 
-                        @Override
-                        public void onError(Exception e) {
-                            Log.i(PdfDocument.TAG_PDF_MY_XML, "Error");
-                        }
-                    });
-
-                    doc.createPdf(ctx);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
@@ -209,6 +206,182 @@ public class UserTransactionAdapter extends RecyclerView.Adapter<UserTransaction
             builder.show();
             }
         });
+    }
+
+    private static void addMetaData(Document document,Transaction transaction) {
+        System.out.println("inside metadata");
+        document.addTitle("Invoice for "+ transaction.getUname());
+        document.addSubject("Invoice from OpenCredit app");
+        document.addKeywords("OpenCredit, Invoice, Bill, "+transaction.getUname());
+        document.addAuthor("OpenCredit Inc");
+        document.addCreator("chidambarampg@gmail.com");
+    }
+
+    private static void addTitlePage(Document document,Transaction transaction)
+            throws DocumentException {
+        Paragraph preface = new Paragraph();
+        addEmptyLine(preface, 1);
+
+        Paragraph p1= new Paragraph(" OPEN CREDIT ");
+        p1.setAlignment(Element.ALIGN_CENTER);
+        preface.add(p1);
+
+        Paragraph p5= new Paragraph(" --------------------------------------------------------------------------------------------------------------------------- ");
+        p5.setAlignment(Element.ALIGN_CENTER);
+        preface.add(p5);
+
+//        addEmptyLine(preface, 1);
+
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat trnsDt = new SimpleDateFormat("dd-MMM-yyyy");
+        final String formattedTrnsDate = trnsDt.format(c);
+
+        SimpleDateFormat trnsDt02 = new SimpleDateFormat("ddMMyyyy");
+        final String formattedTrnsDate02 = trnsDt02.format(c);
+
+        SimpleDateFormat trnsDt03 = new SimpleDateFormat("hh-mm-ss");
+        final String formattedTrnsTime = trnsDt03.format(c);
+
+        Chunk glue = new Chunk(new VerticalPositionMark());
+        Paragraph p3 = new Paragraph("Customer : "+ transaction.getUname());
+        p3.add(new Chunk(glue));
+        p3.add("Invoice : INV" + formattedTrnsDate02);
+        preface.add(p3);
+//
+//        Paragraph p3= new Paragraph("Invoice : INV" + formattedTrnsDate02);
+//        p3.setTabSettings(new TabSettings(56f));
+//        p3.setAlignment(Element.ALIGN_RIGHT);
+//        preface.add(p3);
+
+        Chunk glue2 = new Chunk(new VerticalPositionMark());
+        Paragraph p6 = new Paragraph("Date : " + formattedTrnsDate);
+        p6.add(new Chunk(glue2));
+        p6.add("Time : " + formattedTrnsTime);
+        preface.add(p6);
+//
+//        Paragraph p6= new Paragraph("Date : " + formattedTrnsDate);
+//        p6.setTabSettings(new TabSettings(56f));
+//        p6.setAlignment(Element.ALIGN_RIGHT);
+//        preface.add(p6);
+
+        Paragraph p4= new Paragraph(" --------------------------------------------------------------------------------------------------------------------------- ");
+        p4.setAlignment(Element.ALIGN_CENTER);
+        preface.add(p4);
+
+        addEmptyLine(preface, 2);
+
+        document.add(preface);
+    }
+
+    private static void addContent(Document document,Transaction transaction) throws DocumentException {
+
+        Paragraph subPara = new Paragraph();
+
+        createTable(subPara,transaction);
+
+        document.add(subPara);
+
+    }
+
+    private static void createTable(Paragraph subCatPart,Transaction transaction)
+            throws BadElementException {
+        PdfPTable table = new PdfPTable(5);
+
+        PdfPCell c1 = new PdfPCell(new Phrase("Item No"));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+
+        c1 = new PdfPCell(new Phrase("Item "));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+
+        c1 = new PdfPCell(new Phrase("Price/Unit"));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+
+        c1 = new PdfPCell(new Phrase("Qty"));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+
+        c1 = new PdfPCell(new Phrase("Total Price"));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+
+        table.setHeaderRows(1);
+
+        if(transaction.getTransType().equals("debit")){
+
+            table.addCell(String.valueOf(1));
+            table.addCell("DEBIT");
+            table.addCell("\u20B9 "+transaction.getAmount());
+            table.addCell("1");
+            table.addCell("\u20B9"+transaction.getAmount());
+
+        }else{
+
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<BillingItems>>(){}.getType();
+            ArrayList<BillingItems> items = gson.fromJson(transaction.getNote(), listType);
+
+            if(items.size() <1){
+
+                Paragraph p3= new Paragraph(" No Items are added with this purchase ");
+                p3.setAlignment(Element.ALIGN_CENTER);
+                subCatPart.add(p3);
+
+            }else{
+
+                int index = 0;
+                for(BillingItems item:items){
+                    index++;
+
+                    table.addCell(String.valueOf(index));
+                    table.addCell(item.getItemName());
+                    table.addCell("\u20B9"+item.getItmUnitPrice());
+                    table.addCell(item.getItemQty());
+                    table.addCell("\u20B9"+item.getItemPrice());
+
+                }
+
+            }
+
+        }
+
+        subCatPart.add(table);
+    }
+
+    private static void addBottom(Document document,Transaction transaction) throws DocumentException {
+
+        Paragraph bottPara = new Paragraph();
+
+        addEmptyLine(bottPara, 3);
+
+        Gson gson = new Gson();
+        Type listType = new TypeToken<ArrayList<BillingItems>>(){}.getType();
+        ArrayList<BillingItems> items = gson.fromJson(transaction.getNote(), listType);
+
+        Paragraph p5= new Paragraph(" --------------------------------------------------------------------------------------------------------------------------- ");
+        p5.setAlignment(Element.ALIGN_CENTER);
+        bottPara.add(p5);
+
+        Paragraph p3= new Paragraph("Total : \u20B9" + transaction.getAmount());
+        p3.setAlignment(Element.ALIGN_RIGHT);
+        bottPara.add(p3);
+
+        Paragraph p4= new Paragraph(" --------------------------------------------------------------------------------------------------------------------------- ");
+        p4.setAlignment(Element.ALIGN_CENTER);
+        bottPara.add(p4);
+
+        addEmptyLine(bottPara, 2);
+
+        document.add(bottPara);
+
+    }
+
+    private static void addEmptyLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
     }
 
     @Override

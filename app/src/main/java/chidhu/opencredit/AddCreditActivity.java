@@ -397,6 +397,18 @@ public class AddCreditActivity extends AppCompatActivity implements CalcDialog.C
                 contactTxt.setText(resultName.substring(0, 1).toUpperCase() + resultName.substring(1) + " (" + resultNumber + ")");
             }
         }
+
+        adapter.setOnDataChangeListener(new AddedItemsAdapter.OnDataChangeListener(){
+            @Override
+            public void onDataChanged(ArrayList<BillingItems> items) {
+                float total = 0;
+                for(BillingItems item:items){
+                    System.out.println(item.getItemPrice());
+                    total = total + (Float.parseFloat(item.getItemPrice()) * Float.parseFloat(item.getItemQty()));
+                }
+                creditTxt.setText(String.valueOf(total));
+            }
+        });
     }
 
     @Override

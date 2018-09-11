@@ -9,4 +9,10 @@
         android:title="SAVE NOW"
         android:icon="@drawable/ic_baseline_delete_24px"/>
 
+    <item
+        android:id="@+id/action_print_all"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="Print"/>
+
 </menu>

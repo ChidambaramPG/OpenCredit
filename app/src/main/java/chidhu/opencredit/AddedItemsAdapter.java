@@ -56,9 +56,21 @@ public class AddedItemsAdapter extends RecyclerView.Adapter<AddedItemsAdapter.My
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position,itemsList.size());
                 Toast.makeText(ctx, "Removed", Toast.LENGTH_SHORT).show();
+
+                if(mOnDataChangeListener != null){
+                    mOnDataChangeListener.onDataChanged(itemsList);
+                }
             }
         });
 
+    }
+
+    public interface OnDataChangeListener{
+        public void onDataChanged(ArrayList<BillingItems> items);
+    }
+    OnDataChangeListener mOnDataChangeListener;
+    public void setOnDataChangeListener(OnDataChangeListener onDataChangeListener){
+        mOnDataChangeListener = onDataChangeListener;
     }
 
     @Override

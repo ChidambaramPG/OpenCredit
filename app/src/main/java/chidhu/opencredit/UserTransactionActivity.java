@@ -1,11 +1,14 @@
 package chidhu.opencredit;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -37,7 +40,30 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.TabSettings;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.VerticalPositionMark;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,7 +83,7 @@ public class UserTransactionActivity extends AppCompatActivity {
     RecyclerView userTransList;
     RecyclerView.Adapter adapter;
     public OpenCreditDatabase opDB;
-    List<Transaction> userTrans = new ArrayList<>();;
+    ArrayList<Transaction> userTrans = new ArrayList<>();;
     Date c;
     int credit=0, debit = 0, bal = 0;
     TextView balTxt;
@@ -71,14 +97,40 @@ public class UserTransactionActivity extends AppCompatActivity {
 
     String num, name;
 
+    ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_transaction);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+
+        progressDialog = new ProgressDialog(getApplicationContext());
+
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+//                        Toast.makeText(UserTransactionActivity.this, "respomse : "+response, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        Toast.makeText(UserTransactionActivity.this, "PDF creation needs write acess.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+
+                    }
+                })
+                .check();
+
         Intent i = getIntent();
         num = i.getStringExtra("number");
         name = i.getStringExtra("name");
@@ -260,8 +312,188 @@ public class UserTransactionActivity extends AppCompatActivity {
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
                 break;
+            case R.id.action_print_all:
+
+                try {
+
+                    File path = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.FROYO) {
+                        path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+                        File file = new File(path, "/" + userTrans.get(0).getUname()+".pdf");
+                        System.out.println("Writing to"+ file.getAbsolutePath());
+                        Document document = new Document();
+                        PdfWriter.getInstance(document, new FileOutputStream(file));
+                        document.open();
+//                            Rectangle two = new Rectangle(700,400);
+//                            document.setPageSize(two);
+//                            document.setMargins(20, 20, 20, 20);
+                        addMetaData(document,userTrans);
+                        addTitlePage(document,userTrans);
+                        addContent(document,userTrans);
+                        addBottom(document,userTrans);
+
+                        document.close();
+//                        progressDialog.dismiss();
+                        Toast.makeText(this, "File saved to your Documents folder", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private static void addMetaData(Document document,ArrayList<Transaction> transaction) {
+        System.out.println("inside metadata");
+        document.addTitle("Report for "+ transaction.get(0).getUname());
+        document.addSubject("Invoice from OpenCredit app");
+        document.addKeywords("OpenCredit, Report, "+transaction.get(0).getUname());
+        document.addAuthor("OpenCredit Inc");
+        document.addCreator("chidambarampg@gmail.com");
+    }
+
+    private static void addTitlePage(Document document,ArrayList<Transaction> transaction)
+            throws DocumentException {
+        Paragraph preface = new Paragraph();
+        addEmptyLine(preface, 1);
+
+        Paragraph p1= new Paragraph(" OPEN CREDIT ");
+        p1.setAlignment(Element.ALIGN_CENTER);
+        preface.add(p1);
+
+        Paragraph p5= new Paragraph(" --------------------------------------------------------------------------------------------------------------------------- ");
+        p5.setAlignment(Element.ALIGN_CENTER);
+        preface.add(p5);
+
+//        addEmptyLine(preface, 1);
+
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat trnsDt = new SimpleDateFormat("dd-MMM-yyyy");
+        final String formattedTrnsDate = trnsDt.format(c);
+
+        SimpleDateFormat trnsDt02 = new SimpleDateFormat("ddMMyyyy");
+        final String formattedTrnsDate02 = trnsDt02.format(c);
+
+        SimpleDateFormat trnsDt03 = new SimpleDateFormat("hh-mm-ss");
+        final String formattedTrnsTime = trnsDt03.format(c);
+
+        Chunk glue = new Chunk(new VerticalPositionMark());
+        Paragraph p3 = new Paragraph("Customer : "+ transaction.get(0).getUname());
+        p3.add(new Chunk(glue));
+        p3.add("Report : REP" + formattedTrnsDate02);
+        preface.add(p3);
+
+        Chunk glue2 = new Chunk(new VerticalPositionMark());
+        Paragraph p4 = new Paragraph("Date : " + formattedTrnsDate);
+        p4.add(new Chunk(glue2));
+        p4.add("Time : " + formattedTrnsTime);
+        preface.add(p4);
+
+
+
+        Paragraph p6= new Paragraph(" --------------------------------------------------------------------------------------------------------------------------- ");
+        p6.setAlignment(Element.ALIGN_CENTER);
+        preface.add(p6);
+
+        addEmptyLine(preface, 2);
+
+        document.add(preface);
+    }
+
+    private static void addContent(Document document,ArrayList<Transaction> transaction) throws DocumentException {
+
+        Paragraph subPara = new Paragraph();
+
+        createTable(subPara,transaction);
+
+        document.add(subPara);
+
+    }
+
+    private static void createTable(Paragraph subCatPart,ArrayList<Transaction> transaction)
+            throws BadElementException {
+        PdfPTable table = new PdfPTable(4);
+
+        PdfPCell c1 = new PdfPCell(new Phrase("No"));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+
+        c1 = new PdfPCell(new Phrase("Date"));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+
+        c1 = new PdfPCell(new Phrase("Type"));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+
+        c1 = new PdfPCell(new Phrase("Amount"));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+
+        table.setHeaderRows(1);
+
+
+        int index = 0;
+        for(Transaction item:transaction){
+            index++;
+            table.addCell(String.valueOf(index));
+            table.addCell(item.getDate());
+            table.addCell(item.getTransType());
+            table.addCell("\u20B9"+item.getAmount());
+        }
+
+        subCatPart.add(table);
+    }
+
+    private static void addBottom(Document document,ArrayList<Transaction> transaction) throws DocumentException {
+
+        Paragraph bottPara = new Paragraph();
+
+        addEmptyLine(bottPara, 3);
+
+        float totalDebit = 0;
+        float totalCredit = 0;
+        for(Transaction item:transaction){
+            if(item.getTransType().equals("debit")){
+                totalDebit = totalDebit + Float.valueOf(item.getAmount());
+            }
+            if(item.getTransType().equals("credit")){
+                totalCredit = totalCredit + Float.valueOf(item.getAmount());
+            }
+        }
+        Paragraph p5= new Paragraph(" --------------------------------------------------------------------------------------------------------------------------- ");
+        p5.setAlignment(Element.ALIGN_CENTER);
+        bottPara.add(p5);
+
+        Paragraph p3= new Paragraph("Total Purchase Amount : \u20B9" + totalCredit);
+        p3.setAlignment(Element.ALIGN_RIGHT);
+        bottPara.add(p3);
+
+        Paragraph p6= new Paragraph("Total Paid Amount : \u20B9" + totalDebit);
+        p6.setAlignment(Element.ALIGN_RIGHT);
+        bottPara.add(p6);
+
+        Paragraph p7= new Paragraph("Balance Amount : \u20B9" + (totalCredit - totalDebit));
+        p7.setAlignment(Element.ALIGN_RIGHT);
+        bottPara.add(p7);
+
+        Paragraph p4= new Paragraph(" --------------------------------------------------------------------------------------------------------------------------- ");
+        p4.setAlignment(Element.ALIGN_CENTER);
+        bottPara.add(p4);
+
+        addEmptyLine(bottPara, 2);
+
+        document.add(bottPara);
+
+    }
+
+    private static void addEmptyLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
     }
 
     @Override
