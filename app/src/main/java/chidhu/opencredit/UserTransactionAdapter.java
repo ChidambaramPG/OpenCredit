@@ -121,15 +121,26 @@ public class UserTransactionAdapter extends RecyclerView.Adapter<UserTransaction
 //                addedItems.setAdapter(adapter);
                 System.out.println(billing_items.size());
             }else{
-                System.out.println("Items Present");
-                Gson gson = new Gson();
-                Type listType = new TypeToken<ArrayList<BillingItems>>(){}.getType();
-                billing_items = gson.fromJson(transList.get(position).getNote(), listType);
+                if(transList.get(position).getNote().equals("")){
 
-                adapter = new AddedItemsAdapter(billing_items,ctx);
-                addedItems.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
+                    billing_items.clear();
 
+                }else{
+
+                    System.out.println("Items Present");
+                    try{
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<ArrayList<BillingItems>>(){}.getType();
+                        billing_items = gson.fromJson(transList.get(position).getNote(), listType);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+
+                    adapter = new AddedItemsAdapter(billing_items,ctx);
+                    addedItems.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+
+                }
 //                System.out.println(billing_items.size());
             }
 

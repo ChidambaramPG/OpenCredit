@@ -28,9 +28,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             System.out.println(e);
         }
 
-        Animation anim = AnimationUtils.loadAnimation(this,R.anim.slide_up);
         Button getStrted = findViewById(R.id.getStrtedBtn);
-        getStrted.startAnimation(anim);
         getStrted.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
