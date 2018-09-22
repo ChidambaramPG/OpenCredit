@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,14 +24,20 @@ import java.util.List;
  * Date     : 28-04-2018
  */
 
-public class TotalTransactionAdapter extends RecyclerView.Adapter<TotalTransactionAdapter.MyViewHolder>{
+public class TotalTransactionAdapter extends RecyclerView.Adapter<TotalTransactionAdapter.MyViewHolder> {
     List<Transaction> todysTrns = new ArrayList<>();
+
+    List<Transaction> transList = new ArrayList<>();
+    List<Transaction> transList2 = new ArrayList<>();
+
     Context ctx;
     AlertDialog dialog;
     AlertDialog.Builder builder;
 
 
     public TotalTransactionAdapter(List<Transaction> todysTrns, Context ctx) {
+        this.transList = todysTrns;
+        this.transList2 = todysTrns;
         this.todysTrns = todysTrns;
         this.ctx = ctx;
     }
@@ -105,6 +112,38 @@ public class TotalTransactionAdapter extends RecyclerView.Adapter<TotalTransacti
             typeImg = itemView.findViewById(R.id.typeImg);
             lyt = itemView.findViewById(R.id.todaysTransLyt);
         }
+    }
+
+    List<Transaction> filteredTransList = new ArrayList<>();
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    transList = transList2;
+                } else {
+                    List<Transaction> filteredTransList = new ArrayList<>();
+                    for (Transaction row : filteredTransList) {
+                        if (row.getUname().toLowerCase().contains(charString.toLowerCase()) || row.getNumber().contains(charSequence)) {
+                            filteredTransList.add(row);
+                        }
+                    }
+
+                    transList = filteredTransList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = transList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                transList = (ArrayList<Transaction>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
 }

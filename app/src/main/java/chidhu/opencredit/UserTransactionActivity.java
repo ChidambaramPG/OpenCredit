@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -43,12 +44,16 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.TabSettings;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -63,6 +68,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -77,6 +83,8 @@ import java.util.Map;
 
 import chidhu.opencredit.databaseclasses.OpenCreditDatabase;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static com.itextpdf.text.html.HtmlTags.FONT;
 
 public class UserTransactionActivity extends AppCompatActivity {
 
@@ -98,6 +106,9 @@ public class UserTransactionActivity extends AppCompatActivity {
     String num, name;
 
     ProgressDialog progressDialog;
+
+    private static float fontSmall =  7,fontBig = 10;
+
 
 
     @Override
@@ -323,10 +334,12 @@ public class UserTransactionActivity extends AppCompatActivity {
                         System.out.println("Writing to"+ file.getAbsolutePath());
                         Document document = new Document();
                         PdfWriter.getInstance(document, new FileOutputStream(file));
+                        //
+                        Rectangle one = new Rectangle(216,360);
+                        document.setPageSize(one);
+                        document.setMargins(20, 20, 5, 20);
+                        //
                         document.open();
-//                            Rectangle two = new Rectangle(700,400);
-//                            document.setPageSize(two);
-//                            document.setMargins(20, 20, 20, 20);
                         addMetaData(document,userTrans);
                         addTitlePage(document,userTrans);
                         addContent(document,userTrans);
@@ -335,6 +348,10 @@ public class UserTransactionActivity extends AppCompatActivity {
                         document.close();
 //                        progressDialog.dismiss();
                         Toast.makeText(this, "File saved to your Documents folder", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        startActivity(intent);
                     }
 
                 } catch (Exception e) {
@@ -355,16 +372,21 @@ public class UserTransactionActivity extends AppCompatActivity {
         document.addCreator("chidambarampg@gmail.com");
     }
 
+
+
     private static void addTitlePage(Document document,ArrayList<Transaction> transaction)
             throws DocumentException {
-        Paragraph preface = new Paragraph();
-        addEmptyLine(preface, 1);
 
-        Paragraph p1= new Paragraph(" OPEN CREDIT ");
+
+        Font font5pt = new Font(Font.FontFamily.TIMES_ROMAN, fontBig);
+        Font font2pt = new Font(Font.FontFamily.TIMES_ROMAN, fontSmall);
+
+        Paragraph preface = new Paragraph();
+        Paragraph p1= new Paragraph(" OPEN CREDIT ",font5pt);
         p1.setAlignment(Element.ALIGN_CENTER);
         preface.add(p1);
 
-        Paragraph p5= new Paragraph(" --------------------------------------------------------------------------------------------------------------------------- ");
+        Paragraph p5= new Paragraph("  ----------------------------------------- ",font2pt);
         p5.setAlignment(Element.ALIGN_CENTER);
         preface.add(p5);
 
@@ -374,85 +396,138 @@ public class UserTransactionActivity extends AppCompatActivity {
         SimpleDateFormat trnsDt = new SimpleDateFormat("dd-MMM-yyyy");
         final String formattedTrnsDate = trnsDt.format(c);
 
-        SimpleDateFormat trnsDt02 = new SimpleDateFormat("ddMMyyyy");
+        SimpleDateFormat trnsDt02 = new SimpleDateFormat("ddMMyyyyhhmm");
         final String formattedTrnsDate02 = trnsDt02.format(c);
 
         SimpleDateFormat trnsDt03 = new SimpleDateFormat("hh-mm-ss");
         final String formattedTrnsTime = trnsDt03.format(c);
 
         Chunk glue = new Chunk(new VerticalPositionMark());
-        Paragraph p3 = new Paragraph("Customer : "+ transaction.get(0).getUname());
+        Paragraph p3 = new Paragraph("Customer : "+ transaction.get(0).getUname(),font2pt);
         p3.add(new Chunk(glue));
         p3.add("Report : REP" + formattedTrnsDate02);
         preface.add(p3);
 
         Chunk glue2 = new Chunk(new VerticalPositionMark());
-        Paragraph p4 = new Paragraph("Date : " + formattedTrnsDate);
+        Paragraph p4 = new Paragraph("Date : " + formattedTrnsDate,font2pt);
         p4.add(new Chunk(glue2));
         p4.add("Time : " + formattedTrnsTime);
         preface.add(p4);
 
 
 
-        Paragraph p6= new Paragraph(" --------------------------------------------------------------------------------------------------------------------------- ");
+        Paragraph p6= new Paragraph("  ----------------------------------------- ",font2pt);
         p6.setAlignment(Element.ALIGN_CENTER);
         preface.add(p6);
-
-        addEmptyLine(preface, 2);
 
         document.add(preface);
     }
 
-    private static void addContent(Document document,ArrayList<Transaction> transaction) throws DocumentException {
+    private static void addContent(Document document,ArrayList<Transaction> transaction) throws DocumentException, IOException {
+
+
+
+        Font font5pt = new Font(Font.FontFamily.TIMES_ROMAN, fontBig);
+        Font font2pt = new Font(Font.FontFamily.TIMES_ROMAN, fontSmall);
 
         Paragraph subPara = new Paragraph();
 
+
+        Paragraph p1= new Paragraph(" Item No \t Date \t Type \t Amount ",font5pt);
+        subPara.add(p1);
         createTable(subPara,transaction);
 
         document.add(subPara);
 
     }
+    public static Font getFontForThisLanguage(String language) {
+        if ("czech".equals(language)) {
+            return FontFactory.getFont(FONT, "Cp1250", true);
+        }
+        if ("greek".equals(language)) {
+            return FontFactory.getFont(FONT, "Cp1253", true);
+        }
+        return FontFactory.getFont(FONT, null, true);
+    }
+
+    public static PdfPCell getNormalCell(String string, String language, float size)
+            throws DocumentException, IOException {
+        if(string != null && "".equals(string)){
+            return new PdfPCell();
+        }
+        Font f  = getFontForThisLanguage(language);
+        if(size < 0) {
+            f.setColor(BaseColor.RED);
+            size = -size;
+        }
+        f.setSize(size);
+        PdfPCell cell = new PdfPCell(new Phrase(string, f));
+        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        return cell;
+    }
 
     private static void createTable(Paragraph subCatPart,ArrayList<Transaction> transaction)
-            throws BadElementException {
-        PdfPTable table = new PdfPTable(4);
+            throws DocumentException, IOException {
 
-        PdfPCell c1 = new PdfPCell(new Phrase("No"));
-        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        table.addCell(c1);
-
-        c1 = new PdfPCell(new Phrase("Date"));
-        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        table.addCell(c1);
-
-        c1 = new PdfPCell(new Phrase("Type"));
-        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        table.addCell(c1);
-
-        c1 = new PdfPCell(new Phrase("Amount"));
-        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        table.addCell(c1);
-
-        table.setHeaderRows(1);
-
-
+        Font font5pt = new Font(Font.FontFamily.TIMES_ROMAN, fontBig);
+        Font font2pt = new Font(Font.FontFamily.TIMES_ROMAN, fontSmall);
+//
+//        PdfPTable table = new PdfPTable(4);
+//        table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+//
+//        PdfPCell c1 = new PdfPCell(new Phrase("Item No",font2pt));
+//
+//        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+//        table.addCell(c1);
+//
+//        c1 = new PdfPCell(new Phrase("Date",font2pt));
+//        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+//        table.addCell(c1);
+//
+//        c1 = new PdfPCell(new Phrase("Type",font2pt));
+//        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+//        table.addCell(c1);
+//
+//        c1 = new PdfPCell(new Phrase("Amount",font2pt));
+//        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+//        table.addCell(c1);
+//
+//        table.setHeaderRows(1);
+//
+//
         int index = 0;
+//        for(Transaction item:transaction){
+//            index++;
+//            table.addCell(getNormalCell(String.valueOf(index),null,fontSmall));
+//            table.addCell(getNormalCell(item.getDate(),null,fontSmall));
+//            table.addCell(getNormalCell(item.getTransType(),null,fontSmall));
+//            table.addCell(getNormalCell("\u20B9"+item.getAmount(),null,fontSmall));
+//        }
+
         for(Transaction item:transaction){
             index++;
-            table.addCell(String.valueOf(index));
-            table.addCell(item.getDate());
-            table.addCell(item.getTransType());
-            table.addCell("\u20B9"+item.getAmount());
+//            table.addCell(getNormalCell(String.valueOf(index),null,fontSmall));
+//            table.addCell(getNormalCell(item.getDate(),null,fontSmall));
+//            table.addCell(getNormalCell(item.getTransType(),null,fontSmall));
+//            table.addCell(getNormalCell("\u20B9"+item.getAmount(),null,fontSmall));
+
+            Paragraph p1= new Paragraph(String.valueOf(index)+"\t"+item.getDate()+"\t"+item.getTransType()+"\u20B9"+item.getAmount(),font5pt);
+            p1.setAlignment(Element.ALIGN_CENTER);
+            subCatPart.add(p1);
         }
 
-        subCatPart.add(table);
+
+
     }
 
     private static void addBottom(Document document,ArrayList<Transaction> transaction) throws DocumentException {
 
         Paragraph bottPara = new Paragraph();
 
-        addEmptyLine(bottPara, 3);
+        Font font5pt = new Font(Font.FontFamily.TIMES_ROMAN, fontBig);
+        Font font2pt = new Font(Font.FontFamily.TIMES_ROMAN, fontSmall);
+
+//        addEmptyLine(bottPara, 3);
 
         float totalDebit = 0;
         float totalCredit = 0;
@@ -464,28 +539,25 @@ public class UserTransactionActivity extends AppCompatActivity {
                 totalCredit = totalCredit + Float.valueOf(item.getAmount());
             }
         }
-        Paragraph p5= new Paragraph(" --------------------------------------------------------------------------------------------------------------------------- ");
+        Paragraph p5= new Paragraph(" ----------------------------------------- ",font2pt);
         p5.setAlignment(Element.ALIGN_CENTER);
         bottPara.add(p5);
 
-        Paragraph p3= new Paragraph("Total Purchase Amount : \u20B9" + totalCredit);
+        Paragraph p3= new Paragraph("Total Purchase Amount : \u20B9" + totalCredit,font2pt);
         p3.setAlignment(Element.ALIGN_RIGHT);
         bottPara.add(p3);
 
-        Paragraph p6= new Paragraph("Total Paid Amount : \u20B9" + totalDebit);
+        Paragraph p6= new Paragraph("Total Paid Amount : \u20B9" + totalDebit,font2pt);
         p6.setAlignment(Element.ALIGN_RIGHT);
         bottPara.add(p6);
 
-        Paragraph p7= new Paragraph("Balance Amount : \u20B9" + (totalCredit - totalDebit));
+        Paragraph p7= new Paragraph("Balance Amount : \u20B9" + (totalCredit - totalDebit),font2pt);
         p7.setAlignment(Element.ALIGN_RIGHT);
         bottPara.add(p7);
 
-        Paragraph p4= new Paragraph(" --------------------------------------------------------------------------------------------------------------------------- ");
+        Paragraph p4= new Paragraph("  ----------------------------------------- ",font2pt);
         p4.setAlignment(Element.ALIGN_CENTER);
         bottPara.add(p4);
-
-        addEmptyLine(bottPara, 2);
-
         document.add(bottPara);
 
     }
