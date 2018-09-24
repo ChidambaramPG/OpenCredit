@@ -58,11 +58,13 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.savvi.rangedatepicker.CalendarPickerView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -96,6 +98,10 @@ public class UserTransactionActivity extends AppCompatActivity {
     AlertDialog dialog;
     AlertDialog.Builder builder;
 
+
+    android.app.AlertDialog dateDialog;
+    android.app.AlertDialog.Builder dateBuilder;
+
     String num, name;
 
     ProgressDialog progressDialog;
@@ -103,7 +109,11 @@ public class UserTransactionActivity extends AppCompatActivity {
     private static float fontSmall =  7,fontBig = 10;
     private static String gap = "                 ";
 
+    CalendarPickerView calendar;
+    static Date billStatStrtDate = null;
+    static Date billStatEndDate = null;
 
+    Date date = null, date2 = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,8 +236,6 @@ public class UserTransactionActivity extends AppCompatActivity {
             @SuppressLint("RestrictedApi")
             @Override
             public void onClick(View view) {
-
-                
                 SimpleDateFormat trnsDt = new SimpleDateFormat("dd-MMM-yyyy");
                 final String formattedTrnsDate = trnsDt.format(c);
                 SimpleDateFormat trnsTi = new SimpleDateFormat("hh-mm-ss");
@@ -283,6 +291,12 @@ public class UserTransactionActivity extends AppCompatActivity {
         return true;
     }
 
+    public static Calendar toCalendar(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -319,38 +333,101 @@ public class UserTransactionActivity extends AppCompatActivity {
                 break;
             case R.id.action_print_all:
 
+                Toast.makeText(this, "Select date", Toast.LENGTH_SHORT).show();
+                dateBuilder = new android.app.AlertDialog.Builder(new ContextThemeWrapper(UserTransactionActivity.this, R.style.Theme_Dialog));
+                dateDialog = dateBuilder.create();
+                LayoutInflater inflater = dateDialog.getLayoutInflater();
+                View dialoglayout = inflater.inflate(R.layout.date_selection_lyt, null);
+                calendar = dialoglayout.findViewById(R.id.calendar_view);
+                Calendar cal01 = Calendar.getInstance();
+                SimpleDateFormat calDt = new SimpleDateFormat("dd-MMM-yyyy");
+
                 try {
+                    Date st = calDt.parse(userTrans.get(0).getDate());
+                    Date en = calDt.parse(userTrans.get(userTrans.size()-1).getDate());
 
-                    File path = null;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.FROYO) {
-                        path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-                        File file = new File(path, "/" + userTrans.get(0).getUname()+".pdf");
-                        System.out.println("Writing to"+ file.getAbsolutePath());
-                        Document document = new Document();
-                        PdfWriter.getInstance(document, new FileOutputStream(file));
-                        //
-                        Rectangle one = new Rectangle(216,360);
-                        document.setPageSize(one);
-                        document.setMargins(20, 20, 5, 20);
-                        //
-                        document.open();
-                        addMetaData(document,userTrans);
-                        addTitlePage(document,userTrans);
-                        addContent(document,userTrans);
-                        addBottom(document,userTrans);
+                    ArrayList<Date> selecteddates = new ArrayList<>();
+                    selecteddates.add(st);
+                    selecteddates.add(en);
 
-                        document.close();
-//                        progressDialog.dismiss();
-                        Toast.makeText(this, "File saved to your Documents folder", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                        startActivity(intent);
-                    }
 
-                } catch (Exception e) {
+                    cal01.setTime(en);
+                    cal01.add(Calendar.DAY_OF_YEAR,1);
+
+                    calendar.init(st,new Date(String.valueOf(cal01.getTime())))
+                            .inMode(CalendarPickerView.SelectionMode.RANGE);
+
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
+
+                dateBuilder.setPositiveButton("PRINT", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        System.out.println(calendar.getSelectedDates().get(0));
+                        System.out.println(calendar.getSelectedDates().get(calendar.getSelectedDates().size()-1));
+
+                        if(calendar.getSelectedDates().size()<2){
+                            Toast.makeText(UserTransactionActivity.this, "Select a start date and end date", Toast.LENGTH_SHORT).show();
+                        }else {
+
+
+                            Date strt = new Date(String.valueOf(calendar.getSelectedDates().get(0)));
+                            Date end = new Date(String.valueOf(calendar.getSelectedDates().get(calendar.getSelectedDates().size() - 1)));
+                            billStatStrtDate = strt;
+                            billStatEndDate = end;
+
+                            try {
+
+                                File path = null;
+                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.FROYO) {
+                                    path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+                                    File file = new File(path, "/" + userTrans.get(0).getUname() + ".pdf");
+                                    System.out.println("Writing to" + file.getAbsolutePath());
+                                    Document document = new Document();
+                                    PdfWriter.getInstance(document, new FileOutputStream(file));
+                                    //
+                                    Rectangle one = new Rectangle(216, 360);
+                                    document.setPageSize(one);
+                                    document.setMargins(20, 20, 5, 20);
+                                    //
+                                    document.open();
+                                    addMetaData(document, userTrans);
+                                    addTitlePage(document, userTrans);
+                                    addContent(document, userTrans);
+                                    addBottom(document, userTrans);
+
+                                    document.close();
+                                    Toast.makeText(getApplicationContext(), "File saved to your Documents folder", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                    intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                    startActivity(intent);
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                    }
+                });
+
+                dateBuilder.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dateDialog.dismiss();
+                    }
+                });
+
+                dateBuilder.setView(dialoglayout);
+                dateBuilder.show();
+
+
+
+
 
                 break;
         }
@@ -441,11 +518,25 @@ public class UserTransactionActivity extends AppCompatActivity {
         Font font5pt = new Font(Font.FontFamily.TIMES_ROMAN, fontBig);
         Font font2pt = new Font(Font.FontFamily.TIMES_ROMAN, fontSmall);
 
+        SimpleDateFormat trnsDt = new SimpleDateFormat("dd-MMM-yyyy");
+        
+        Date strt = billStatStrtDate;
+        Date end = billStatEndDate;
+        Date cur = null;
         int index = 0;
         for(Transaction item:transaction){
-            index++;
-            Paragraph p1= new Paragraph(String.valueOf(index)+gap+item.getDate()+gap+item.getTransType()+gap+item.getAmount(),font2pt);
-            subCatPart.add(p1);
+            try {
+                cur = trnsDt.parse(item.getDate());
+                if(cur.getTime() >= strt.getTime() && cur.getTime()<= end.getTime()){
+                    System.out.println(cur);
+                    System.out.println("date in between");
+                    index++;
+                    Paragraph p1= new Paragraph(String.valueOf(index)+gap+item.getDate()+gap+item.getTransType()+gap+item.getAmount(),font2pt);
+                    subCatPart.add(p1);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
 
 
@@ -463,12 +554,23 @@ public class UserTransactionActivity extends AppCompatActivity {
 
         float totalDebit = 0;
         float totalCredit = 0;
+        Date strt = billStatStrtDate;
+        Date end = billStatEndDate;
+        Date cur = null;
+        SimpleDateFormat trnsDt = new SimpleDateFormat("dd-MMM-yyyy");
         for(Transaction item:transaction){
-            if(item.getTransType().equals("debit")){
-                totalDebit = totalDebit + Float.valueOf(item.getAmount());
-            }
-            if(item.getTransType().equals("credit")){
-                totalCredit = totalCredit + Float.valueOf(item.getAmount());
+            try {
+                cur = trnsDt.parse(item.getDate());
+                if(cur.getTime() >= strt.getTime() && cur.getTime()<= end.getTime()){
+                    if(item.getTransType().equals("debit")){
+                        totalDebit = totalDebit + Float.valueOf(item.getAmount());
+                    }
+                    if(item.getTransType().equals("credit")){
+                        totalCredit = totalCredit + Float.valueOf(item.getAmount());
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
         }
         Paragraph p5= new Paragraph(" ------------------------------------------------------------- ",font2pt);

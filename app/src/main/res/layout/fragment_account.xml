@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/signoutBtn"
         android:layout_alignParentStart="true"
-        android:text="Print Transactions"
+        android:text="Print Summary"
         android:textColor="@android:color/background_light" />
 
 </RelativeLayout>
