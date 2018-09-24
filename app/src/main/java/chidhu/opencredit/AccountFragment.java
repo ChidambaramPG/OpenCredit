@@ -1,6 +1,9 @@
 package chidhu.opencredit;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,16 +12,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.io.File;
+import java.util.Calendar;
 
 public class AccountFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-    Button signout,changePwd;
+    Button signout,changePwd,print;
     FirebaseAuth mAuth;
     TextView emailID;
+    Calendar myCalendar;
+
+    AlertDialog dialog;
+    AlertDialog.Builder builder;
+
 
     public AccountFragment() {
         // Required empty public constructor
@@ -37,6 +50,8 @@ public class AccountFragment extends Fragment {
         if (getArguments() != null) {
         }
         mAuth = FirebaseAuth.getInstance();
+        myCalendar = Calendar.getInstance();
+
     }
 
     @Override
@@ -49,6 +64,8 @@ public class AccountFragment extends Fragment {
         emailID.setText(mAuth.getCurrentUser().getEmail());
         changePwd = view.findViewById(R.id.chngPswdBtn);
         signout = view.findViewById(R.id.signoutBtn);
+        print = view.findViewById(R.id.printBtn);
+
         signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,6 +81,27 @@ public class AccountFragment extends Fragment {
             public void onClick(View view) {
                 Intent chngPswd = new Intent(getContext(),ChangePasswordActivity.class);
                 startActivity(chngPswd);
+            }
+        });
+
+        print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "Select date", Toast.LENGTH_SHORT).show();
+                builder = new AlertDialog.Builder(getActivity());
+                dialog = builder.create();
+                LayoutInflater inflater = dialog.getLayoutInflater();
+                View dialoglayout = inflater.inflate(R.layout.date_selection_lyt, null);
+
+
+                builder.setPositiveButton("Print", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                builder.setView(dialoglayout);
+                builder.show();
             }
         });
         return view;

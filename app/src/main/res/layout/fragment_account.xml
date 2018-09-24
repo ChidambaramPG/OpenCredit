@@ -14,6 +14,19 @@
         android:layout_margin="5dp"
         android:background="@drawable/card_background">
 
+        <Button
+            android:id="@+id/chngPswdBtn"
+            android:layout_width="49dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="23dp"
+            android:layout_marginTop="48dp"
+            android:backgroundTint="@color/common_google_signin_btn_text_dark_pressed"
+            android:drawableLeft="@drawable/ic_menu_manage"
+            android:drawableTint="@color/colorAccent"
+            android:textColor="@color/colorAccent" />
+
         <ImageView
             android:id="@+id/imageView5"
             android:layout_width="80dp"
@@ -28,9 +41,8 @@
             android:id="@+id/emailIdTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="11dp"
+            android:layout_alignStart="@+id/imageView5"
+            android:layout_below="@+id/imageView5"
             android:text="store@opencredit.com" />
     </RelativeLayout>
 
@@ -44,12 +56,13 @@
         android:text="SIGNOUT" />
 
     <Button
-        android:id="@+id/chngPswdBtn"
+        android:id="@+id/printBtn"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/signoutBtn"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/common_google_signin_btn_text_dark_pressed"
-        android:text="CHANGE PASSWORD"
-        android:textColor="@color/colorAccent" />
+        android:layout_alignParentStart="true"
+        android:text="Print Transactions"
+        android:textColor="@android:color/background_light" />
+
 </RelativeLayout>
