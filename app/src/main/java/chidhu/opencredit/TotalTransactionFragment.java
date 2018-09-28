@@ -5,11 +5,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
@@ -61,6 +63,9 @@ public class TotalTransactionFragment extends Fragment  {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        System.out.println("menu set for search");
+        setHasOptionsMenu(true);
+
         dbRef.child("CUSTOMER_LIST").child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -72,7 +77,7 @@ public class TotalTransactionFragment extends Fragment  {
                     dbRef.child("TRANSACTIONS").child(user.getUid()).child(cust).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            System.out.println("Total transactions");
+//                            System.out.println("Total transactions");
                             for(DataSnapshot snap: dataSnapshot.getChildren()){
                                 for(DataSnapshot snap1: snap.getChildren()){
                                     for(DataSnapshot snap2: snap1.getChildren()){
@@ -92,7 +97,7 @@ public class TotalTransactionFragment extends Fragment  {
                                             String notified = (String) val.get("notified");
 
                                             thisMonthTransactions.add(new Transaction(date,time,amount,transType,uname,number,month,year,note,bill,notified));
-                                            System.out.println(transType);
+//                                            System.out.println(transType);
                                             credit += Integer.valueOf(amount);
                                         }
 
@@ -122,7 +127,9 @@ public class TotalTransactionFragment extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_total_transaction, container, false);
         creditTxt = view.findViewById(R.id.creditTxtLabl);
 
@@ -131,6 +138,7 @@ public class TotalTransactionFragment extends Fragment  {
         todaysCreditList.setLayoutManager(mLayoutManager);
         adapter = new TotalTransactionAdapter(thisMonthTransactions,getContext());
         todaysCreditList.setAdapter(adapter);
+
 
         return view;
     }
@@ -165,37 +173,6 @@ public class TotalTransactionFragment extends Fragment  {
         void onFragmentInteraction(Uri uri);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.search_option_menu, menu);
 
-        SearchManager searchManager =
-                (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getActivity().getComponentName()));
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // filter recycler view when query submitted
-//                adapter.getFilter().filter(query);
-
-//                adapter.
-//                adapter.get
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-                // filter recycler view when text is changed
-//                adapter.getFilter().filter(query);
-                return false;
-            }
-        });
-    }
 
 }

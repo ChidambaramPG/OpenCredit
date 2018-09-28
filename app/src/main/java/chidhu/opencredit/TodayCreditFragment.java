@@ -136,7 +136,7 @@ public class TodayCreditFragment extends Fragment{
 //                                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
 
-                                    System.out.println("modified count: "+cstCount);
+//                                    System.out.println("modified count: "+cstCount);
                                 }
 
                                 @Override

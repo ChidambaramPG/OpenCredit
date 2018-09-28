@@ -1,12 +1,20 @@
 package chidhu.opencredit;
 
+import android.annotation.SuppressLint;
+import android.app.SearchManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -23,11 +31,13 @@ import com.wang.avi.AVLoadingIndicatorView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import chidhu.opencredit.databaseclasses.Customers;
 import chidhu.opencredit.databaseclasses.OpenCreditDatabase;
@@ -42,6 +52,8 @@ public class TotalCreditFragment extends Fragment {
     List<Transactions> thisMonthTransactions;
     List<Customers> allCustomers;
     List<CustomerTransaction> csts = new ArrayList<>();
+    List<CustomerTransaction> tempCsts = new ArrayList<>();
+    List<CustomerTransaction> tempTrans = new ArrayList<>();
     Date c;
     int credit=0, debit = 0, bal = 0;
     TextView creditTxt, debitTxt, balTxt;
@@ -77,8 +89,7 @@ public class TotalCreditFragment extends Fragment {
         String formattedTrnsTime = trnsTi.format(c);
         SimpleDateFormat trnsMonth = new SimpleDateFormat("MMM");
         final String formattedTrnsMonth = trnsMonth.format(c);
-        SimpleDateFormat trnsYear = new SimpleDateFormat("yyyy");
-        final String formattedTrnsYear = trnsYear.format(c);
+
 
         String[] Months = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
         String lstMonth = formattedTrnsMonth;
@@ -91,6 +102,17 @@ public class TotalCreditFragment extends Fragment {
             }
         }
 
+        fetchTransactions();
+
+    }
+
+    private void fetchTransactions() {
+
+        bal = 0;
+
+        SimpleDateFormat trnsYear = new SimpleDateFormat("yyyy");
+        final String formattedTrnsYear = trnsYear.format(c);
+
         dbRef.child("CUSTOMER_LIST").child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -100,69 +122,69 @@ public class TotalCreditFragment extends Fragment {
                 for(final Customer cust:customerList){
                     dbRef.child("TRANSACTIONS").child(user.getUid()).child(cust.getNumber()).child(formattedTrnsYear)
                             .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            String num = null,name  = null,transType  = null,amount  = null;
-                            int custTotCredit = 0,custTotDebit = 0;
-                            int numsTrans = 0;
-                            for(DataSnapshot snap:dataSnapshot.getChildren()){
-                                for(DataSnapshot snap1: snap.getChildren()){
-                                    for(DataSnapshot snap2: snap1.getChildren()){
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    String num = null,name  = null,transType  = null,amount  = null;
+                                    int custTotCredit = 0,custTotDebit = 0;
+                                    int numsTrans = 0;
+                                    for(DataSnapshot snap:dataSnapshot.getChildren()){
+                                        for(DataSnapshot snap1: snap.getChildren()){
+                                            for(DataSnapshot snap2: snap1.getChildren()){
 
-                                        Map<String, Object> val = (Map<String, Object>) snap2.getValue();
-                                        num = (String) val.get("number");
-                                        name = (String) val.get("uname");
-                                        transType = (String) val.get("transType");
-                                        amount = (String) val.get("amount");
+                                                Map<String, Object> val = (Map<String, Object>) snap2.getValue();
+                                                num = (String) val.get("number");
+                                                name = (String) val.get("uname");
+                                                transType = (String) val.get("transType");
+                                                amount = (String) val.get("amount");
 
-                                        if(transType.equals("credit")){
-                                            custTotCredit += Float.valueOf(amount);
-                                            credit += Float.valueOf(amount);
-                                        }else if(transType.equals("debit")){
-                                            custTotDebit += Float.valueOf(amount);
-                                            debit += Float.valueOf(amount);
-                                        }
+                                                if(transType.equals("credit")){
+                                                    custTotCredit += Float.valueOf(amount);
+                                                    credit += Float.valueOf(amount);
+                                                }else if(transType.equals("debit")){
+                                                    custTotDebit += Float.valueOf(amount);
+                                                    debit += Float.valueOf(amount);
+                                                }
 
-                                        numsTrans++;
+                                                numsTrans++;
 
 //                                        System.out.println("num :" + num + "name :" + name + "transType :" + transType + "amount :" + amount);
 
+                                            }
+                                        }
                                     }
-                                }
-                            }
 
-                            if(name == null){
-                                csts.add(new CustomerTransaction(cust.getNumber(),cust.getName(),String.valueOf(0),String.valueOf(0),0));
-                            }else{
-                                csts.add(new CustomerTransaction(num,name,String.valueOf(custTotCredit),String.valueOf(custTotDebit),numsTrans));
-                            }
-                            Collections.sort(csts, new Comparator<CustomerTransaction>() {
+                                    if(name == null){
+                                        csts.add(new CustomerTransaction(cust.getNumber(),cust.getName(),String.valueOf(0),String.valueOf(0),0));
+                                    }else{
+                                        csts.add(new CustomerTransaction(num,name,String.valueOf(custTotCredit),String.valueOf(custTotDebit),numsTrans));
+                                    }
+                                    Collections.sort(csts, new Comparator<CustomerTransaction>() {
+                                        @Override
+                                        public int compare(CustomerTransaction c0, CustomerTransaction c1) {
+                                            return c0.getName().compareToIgnoreCase(c1.getName());
+                                        }
+                                    });
+                                    if(adapter!= null){
+                                        adapter.notifyDataSetChanged();
+                                    }
+
+                                    bal =  credit - debit;
+
+                                    try {
+                                        balTxt.setText("\u20B9" + String.valueOf(bal));
+                                        avi.hide();
+                                    }catch(Exception e){
+                                        System.out.println(e);
+                                    }
+
+                                }
+
                                 @Override
-                                public int compare(CustomerTransaction c0, CustomerTransaction c1) {
-                                    return c0.getName().compareToIgnoreCase(c1.getName());
+                                public void onCancelled(DatabaseError databaseError) {
+
                                 }
+
                             });
-                            if(adapter!= null){
-                                adapter.notifyDataSetChanged();
-                            }
-
-                            bal =  credit - debit;
-
-                            try {
-                                balTxt.setText("\u20B9" + String.valueOf(bal));
-                                avi.hide();
-                            }catch(Exception e){
-                                System.out.println(e);
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-
-                    });
                 }
             }
 
@@ -171,12 +193,12 @@ public class TotalCreditFragment extends Fragment {
 
             }
         });
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_total_credit, container, false);
 
@@ -221,4 +243,68 @@ public class TotalCreditFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.search_option_menu, menu);
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =(SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
+        final SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+
+        System.out.println(searchManager);
+        System.out.println(searchView);
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                System.out.println(query);
+                return false;
+            }
+
+
+            @Override
+            public boolean onQueryTextChange(final String newText) {
+                System.out.println(newText);
+
+                if(newText.isEmpty()){
+                    adapter = new TotalCreditAdapter(csts,getContext());
+                    thisMonthCreditList.setAdapter(adapter);
+
+                }else{
+                    tempTrans.clear();
+
+                    for(CustomerTransaction trans:csts){
+
+                        System.out.println(trans.getName()+ " : " + trans.getTotAmount());
+
+                        if(trans.getName().contains(newText)){
+                            tempTrans.add(trans);
+                        }
+
+                    }
+
+                    adapter = new TotalCreditAdapter(tempTrans,getContext());
+                    thisMonthCreditList.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+
+                    System.out.println("Temp Trans List size :" + tempTrans.size());
+
+                }
+
+
+
+                return true;
+            }
+
+
+        });
+
+        return;
+
+    }
+
 }

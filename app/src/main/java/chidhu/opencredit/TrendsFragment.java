@@ -149,7 +149,7 @@ public class TrendsFragment extends Fragment {
                                                 String name = (String) val.get("uname");
                                                 String transType = (String) val.get("transType");
                                                 String amount = (String) val.get("amount");
-                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
+//                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
                                                     credit[0] += Integer.valueOf(amount);
                                                 }else{
@@ -167,7 +167,7 @@ public class TrendsFragment extends Fragment {
                                                 String name = (String) val.get("uname");
                                                 String transType = (String) val.get("transType");
                                                 String amount = (String) val.get("amount");
-                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
+//                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
                                                     credit[1] += Integer.valueOf(amount);
                                                 }else{
@@ -184,7 +184,7 @@ public class TrendsFragment extends Fragment {
                                                 String name = (String) val.get("uname");
                                                 String transType = (String) val.get("transType");
                                                 String amount = (String) val.get("amount");
-                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
+//                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
                                                     credit[2] += Integer.valueOf(amount);
                                                 }else{
@@ -201,7 +201,7 @@ public class TrendsFragment extends Fragment {
                                                 String name = (String) val.get("uname");
                                                 String transType = (String) val.get("transType");
                                                 String amount = (String) val.get("amount");
-                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
+//                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
                                                     credit[3] += Integer.valueOf(amount);
                                                 }else{
@@ -218,7 +218,7 @@ public class TrendsFragment extends Fragment {
                                                 String name = (String) val.get("uname");
                                                 String transType = (String) val.get("transType");
                                                 String amount = (String) val.get("amount");
-                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
+//                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
                                                     credit[4] += Integer.valueOf(amount);
                                                 }else{
@@ -235,7 +235,7 @@ public class TrendsFragment extends Fragment {
                                                 String name = (String) val.get("uname");
                                                 String transType = (String) val.get("transType");
                                                 String amount = (String) val.get("amount");
-                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
+//                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
                                                     credit[5] += Integer.valueOf(amount);
                                                 }else{
@@ -252,7 +252,7 @@ public class TrendsFragment extends Fragment {
                                                 String name = (String) val.get("uname");
                                                 String transType = (String) val.get("transType");
                                                 String amount = (String) val.get("amount");
-                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
+//                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
                                                     credit[6] += Integer.valueOf(amount);
                                                 }else{
@@ -269,7 +269,7 @@ public class TrendsFragment extends Fragment {
                                                 String name = (String) val.get("uname");
                                                 String transType = (String) val.get("transType");
                                                 String amount = (String) val.get("amount");
-                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
+//                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
                                                     credit[7] += Float.valueOf(amount);
                                                 }else{
@@ -286,7 +286,7 @@ public class TrendsFragment extends Fragment {
                                                 String name = (String) val.get("uname");
                                                 String transType = (String) val.get("transType");
                                                 String amount = (String) val.get("amount");
-                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
+//                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
                                                     credit[8] += Float.valueOf(amount);
                                                 }else{
@@ -303,7 +303,7 @@ public class TrendsFragment extends Fragment {
                                                 String name = (String) val.get("uname");
                                                 String transType = (String) val.get("transType");
                                                 String amount = (String) val.get("amount");
-                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
+//                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
                                                     credit[9] += Float.valueOf(amount);
                                                 }else{
@@ -320,7 +320,7 @@ public class TrendsFragment extends Fragment {
                                                 String name = (String) val.get("uname");
                                                 String transType = (String) val.get("transType");
                                                 String amount = (String) val.get("amount");
-                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
+//                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
                                                     credit[10] += Integer.valueOf(amount);
                                                 }else{
@@ -337,7 +337,7 @@ public class TrendsFragment extends Fragment {
                                                 String name = (String) val.get("uname");
                                                 String transType = (String) val.get("transType");
                                                 String amount = (String) val.get("amount");
-                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
+//                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
                                                     credit[11] += Integer.valueOf(amount);
                                                 }else{
@@ -346,7 +346,7 @@ public class TrendsFragment extends Fragment {
                                             }
                                         }
                                     }
-                                    System.out.println(credit[5]);
+//                                    System.out.println(credit[5]);
                                     count[0]++;
                                     if(count[0] == (customerList.size()*12)){
                                         System.out.println("End of execution");
@@ -357,7 +357,7 @@ public class TrendsFragment extends Fragment {
                                             credits.add(credit[k]);
                                             debits.add(debit[k]);
                                             balance.add(credit[k]-debit[k]);
-                                            System.out.println("k :" + k + " , credit:"+credit[k] + " , debit:"+debit[k]);
+//                                            System.out.println("k :" + k + " , credit:"+credit[k] + " , debit:"+debit[k]);
                                         }
                                         BarDataSet creditSet = new BarDataSet(creditEntries, "CREDIT");
                                         creditSet.setColor(getResources().getColor(R.color.colorCredit));

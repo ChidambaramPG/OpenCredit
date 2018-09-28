@@ -78,7 +78,7 @@ public class TotalTransactionAdapter extends RecyclerView.Adapter<TotalTransacti
 
                 if(todysTrns.get(position).getBill() != null){
                     File imgFile = new File(todysTrns.get(position).getBill());
-                    System.out.println(imgFile.getAbsolutePath());
+//                    System.out.println(imgFile.getAbsolutePath());
 //                    Picasso.get().load(imgFile).into(bill);
                 }
 
