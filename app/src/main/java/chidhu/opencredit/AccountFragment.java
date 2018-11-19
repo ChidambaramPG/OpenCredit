@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -174,6 +175,8 @@ public class AccountFragment extends Fragment {
                     }
 
                 });
+
+                print.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -196,6 +199,7 @@ public class AccountFragment extends Fragment {
         changePwd = view.findViewById(R.id.chngPswdBtn);
         signout = view.findViewById(R.id.signoutBtn);
         print = view.findViewById(R.id.printBtn);
+        print.setVisibility(View.GONE);
 
         signout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -282,7 +286,8 @@ public class AccountFragment extends Fragment {
                                     document.close();
                                     Toast.makeText(getContext(), "File saved to your Documents folder", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                                    Uri uri = FileProvider.getUriForFile(getContext(),BuildConfig.APPLICATION_ID,file);
+                                    intent.setDataAndType(uri, "application/pdf");
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                                     startActivity(intent);
                                 }
@@ -391,7 +396,7 @@ public class AccountFragment extends Fragment {
         document.add(preface);
     }
 
-    private static void addContent(Document document,ArrayList<Transaction> transaction) throws DocumentException, IOException {
+    private static void addContent(Document document,ArrayList<Transaction> transaction) throws DocumentException {
 
 
 
@@ -409,8 +414,7 @@ public class AccountFragment extends Fragment {
 
     }
 
-    private static void createTable(Paragraph subCatPart,ArrayList<Transaction> transaction)
-            throws DocumentException, IOException {
+    private static void createTable(Paragraph subCatPart,ArrayList<Transaction> transaction) {
 
         Font font5pt = new Font(Font.FontFamily.TIMES_ROMAN, fontBig);
         Font font2pt = new Font(Font.FontFamily.TIMES_ROMAN, fontSmall);

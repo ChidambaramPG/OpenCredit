@@ -51,7 +51,6 @@
         android:layout_marginRight="50dp"
         android:gravity="left"
         android:text="TextView"
-        android:textAlignment="viewEnd"
         android:textColor="@color/colorAccent" />
 
     <TextView
@@ -62,8 +61,7 @@
         android:layout_below="@+id/itemNameTxt"
         android:layout_marginRight="50dp"
         android:gravity="left"
-        android:text="TextView"
-        android:textAlignment="viewEnd" />
+        android:text="" />
 
     <ImageView
         android:id="@+id/delBtn"

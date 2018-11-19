@@ -36,7 +36,7 @@ public class ThisMonthTransactionFragment extends Fragment {
     RecyclerView todaysCreditList;
     RecyclerView.Adapter adapter;
     public OpenCreditDatabase opDB;
-    List<Transaction> thisMonthTransactions = new ArrayList<>();;
+    List<Transaction> thisMonthTransactions = new ArrayList<>();
     Date c;
     int credit=0, debit = 0, bal = 0;
     TextView creditTxt, debitTxt, balTxt;

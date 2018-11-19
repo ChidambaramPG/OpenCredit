@@ -151,9 +151,9 @@ public class TrendsFragment extends Fragment {
                                                 String amount = (String) val.get("amount");
 //                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
-                                                    credit[0] += Integer.valueOf(amount);
+                                                    credit[0] += Float.valueOf(amount);
                                                 }else{
-                                                    debit[0] += Integer.valueOf(amount);
+                                                    debit[0] += Float.valueOf(amount);
 
                                                 }
                                             }
@@ -169,9 +169,9 @@ public class TrendsFragment extends Fragment {
                                                 String amount = (String) val.get("amount");
 //                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
-                                                    credit[1] += Integer.valueOf(amount);
+                                                    credit[1] += Float.valueOf(amount);
                                                 }else{
-                                                    debit[1] += Integer.valueOf(amount);
+                                                    debit[1] += Float.valueOf(amount);
                                                 }
                                             }
                                         }
@@ -186,9 +186,9 @@ public class TrendsFragment extends Fragment {
                                                 String amount = (String) val.get("amount");
 //                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
-                                                    credit[2] += Integer.valueOf(amount);
+                                                    credit[2] += Float.valueOf(amount);
                                                 }else{
-                                                    debit[2] += Integer.valueOf(amount);
+                                                    debit[2] += Float.valueOf(amount);
                                                 }
                                             }
                                         }
@@ -203,9 +203,9 @@ public class TrendsFragment extends Fragment {
                                                 String amount = (String) val.get("amount");
 //                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
-                                                    credit[3] += Integer.valueOf(amount);
+                                                    credit[3] += Float.valueOf(amount);
                                                 }else{
-                                                    debit[3] += Integer.valueOf(amount);
+                                                    debit[3] += Float.valueOf(amount);
                                                 }
                                             }
                                         }
@@ -220,9 +220,9 @@ public class TrendsFragment extends Fragment {
                                                 String amount = (String) val.get("amount");
 //                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
-                                                    credit[4] += Integer.valueOf(amount);
+                                                    credit[4] += Float.valueOf(amount);
                                                 }else{
-                                                    debit[4] += Integer.valueOf(amount);
+                                                    debit[4] += Float.valueOf(amount);
                                                 }
                                             }
                                         }
@@ -237,9 +237,9 @@ public class TrendsFragment extends Fragment {
                                                 String amount = (String) val.get("amount");
 //                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
-                                                    credit[5] += Integer.valueOf(amount);
+                                                    credit[5] += Float.valueOf(amount);
                                                 }else{
-                                                    debit[5] += Integer.valueOf(amount);
+                                                    debit[5] += Float.valueOf(amount);
                                                 }
                                             }
                                         }
@@ -254,9 +254,9 @@ public class TrendsFragment extends Fragment {
                                                 String amount = (String) val.get("amount");
 //                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
-                                                    credit[6] += Integer.valueOf(amount);
+                                                    credit[6] += Float.valueOf(amount);
                                                 }else{
-                                                    debit[6] += Integer.valueOf(amount);
+                                                    debit[6] += Float.valueOf(amount);
                                                 }
                                             }
                                         }
@@ -322,9 +322,9 @@ public class TrendsFragment extends Fragment {
                                                 String amount = (String) val.get("amount");
 //                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
-                                                    credit[10] += Integer.valueOf(amount);
+                                                    credit[10] += Float.valueOf(amount);
                                                 }else{
-                                                    debit[10] += Integer.valueOf(amount);
+                                                    debit[10] += Float.valueOf(amount);
                                                 }
                                             }
                                         }
@@ -339,9 +339,9 @@ public class TrendsFragment extends Fragment {
                                                 String amount = (String) val.get("amount");
 //                                                System.out.println(num + " : " + name + " : " + transType + " : " + amount);
                                                 if(transType.equals("credit")){
-                                                    credit[11] += Integer.valueOf(amount);
+                                                    credit[11] += Float.valueOf(amount);
                                                 }else{
-                                                    debit[11] += Integer.valueOf(amount);
+                                                    debit[11] += Float.valueOf(amount);
                                                 }
                                             }
                                         }

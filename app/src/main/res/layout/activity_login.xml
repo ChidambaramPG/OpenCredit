@@ -73,7 +73,6 @@
         android:textColor="@color/common_google_signin_btn_text_dark_default" />
 
     <TextView
-        android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/loginBtn"
@@ -82,7 +81,6 @@
         android:text="FORGOT PASSWORD" />
 
     <TextView
-        android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

@@ -281,7 +281,7 @@ public class TotalCreditFragment extends Fragment {
 
                         System.out.println(trans.getName()+ " : " + trans.getTotAmount());
 
-                        if(trans.getName().contains(newText)){
+                        if(trans.getName().toUpperCase().contains(newText.toUpperCase())){
                             tempTrans.add(trans);
                         }
 

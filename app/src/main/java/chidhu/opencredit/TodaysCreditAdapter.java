@@ -27,6 +27,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -88,6 +89,7 @@ public class TodaysCreditAdapter extends RecyclerView.Adapter<TodaysCreditAdapte
             @SuppressLint("RestrictedApi")
             @Override
             public void onClick(View view) {
+                System.out.println("clicked");
                 boolean notified = false;
                 c = Calendar.getInstance().getTime();
                 SimpleDateFormat trnsDt = new SimpleDateFormat("dd-MMM-yyyy");
@@ -105,89 +107,151 @@ public class TodaysCreditAdapter extends RecyclerView.Adapter<TodaysCreditAdapte
 
                 final boolean[] notif = {false};
 
-                dbRef.child("TRANSACTIONS").child(user.getUid())
-                        .child(todysTrns.get(position).getNumber()).child(formattedTrnsYear).child(formattedTrnsMonth).addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                        for(DataSnapshot snap: dataSnapshot.getChildren()){
-//                            for(DataSnapshot snap1: snap.getChildren()){
-//                                for(DataSnapshot snap2: snap1.getChildren()){
-//                                    for(DataSnapshot snap3: snap2.getChildren()){
-                                    System.out.println("####################" );
-                                    System.out.println(snap);
-                                    System.out.println("####################" );
-
-                                    Map<String, Object> val = (Map<String, Object>) snap.getValue();
-                                    String date = (String) val.get("date");
-                                    String time = (String) val.get("time");
-                                    String amount = (String) val.get("amount");
-                                    String transType = (String) val.get("transType");
-                                    String uname = (String) val.get("uname");
-                                    String number = (String) val.get("number");
-                                    String month = (String) val.get("month");
-                                    String year = (String) val.get("year");
-                                    String note = (String) val.get("note");
-                                    String bill = (String) val.get("bill");
-                                    String notified = (String) val.get("notified");
-
-
-                                    System.out.println(uname + " - " + amount);
-                                    credit += Float.valueOf(amount);
+//                dbRef.child("TRANSACTIONS").child(user.getUid())
+//                        .child(todysTrns.get(position).getNumber()).child(formattedTrnsYear).child(formattedTrnsMonth).addChildEventListener(new ChildEventListener() {
+//                    @Override
+//                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                        for(DataSnapshot snap: dataSnapshot.getChildren()){
+//                            System.out.println("####################" );
+//                            System.out.println(snap);
+//                            System.out.println("####################" );
+//
+//                            Map<String, Object> val = (Map<String, Object>) snap.getValue();
+//                            String date = (String) val.get("date");
+//                            String time = (String) val.get("time");
+//                            String amount = (String) val.get("amount");
+//                            String transType = (String) val.get("transType");
+//                            String uname = (String) val.get("uname");
+//                            String number = (String) val.get("number");
+//                            String month = (String) val.get("month");
+//                            String year = (String) val.get("year");
+//                            String note = (String) val.get("note");
+//                            String bill = (String) val.get("bill");
+//                            String notified = (String) val.get("notified");
 //
 //
-                                    if(transType != null && notified !=null && transType.equals("credit") && notified.equals("false")){
-                                        subject[0] = subject[0] + " You bought for \u20B9" + amount + " on " + date + " at " + time + "\n"  ;
-                                        notifList.add(new Transaction(date,time,amount,transType,uname,number,month,year,note,bill,notified));
-                                    }else if(transType != null && notified !=null &&transType.equals("debit") && notified.equals("false")){
-                                        subject[0] = subject[0] + " You paid \u20B9" + amount + " on " + date + " at " + time + "\n"  ;
-                                        notifList.add(new Transaction(date,time,amount,transType,uname,number,month,year,note,bill,notified));
-                                    }
-
-//                                    }
-//                                }
+//                            System.out.println(uname + " - " + amount);
+//                            credit += Float.valueOf(amount);
+//
+//                            if(transType != null && notified !=null && transType.equals("credit") && notified.equals("false")){
+//                                subject[0] = subject[0] + " You bought for \u20B9" + amount + " on " + date + " at " + time + "\n"  ;
+//                                notifList.add(new Transaction(date,time,amount,transType,uname,number,month,year,note,bill,notified));
+//                            }else if(transType != null && notified !=null && transType.equals("debit") && notified.equals("false")){
+//                                subject[0] = subject[0] + " You paid \u20B9" + amount + " on " + date + " at " + time + "\n"  ;
+//                                notifList.add(new Transaction(date,time,amount,transType,uname,number,month,year,note,bill,notified));
 //                            }
+//
+//                        }
+//
+//                        System.out.println("notif:"+String.valueOf(notif[0]));
+//                        System.out.println("subject:"+String.valueOf(notif[0]));
+//
+//                        if(subject[0].isEmpty() || notif[0] == true){
+//                            Toast.makeText(ctx, "All transactions are notified.", Toast.LENGTH_SHORT).show();
+////                            System.out.println("nothing to send");
+//
+//                        }else{
+//
+//                            try{
+//                                notif[0] = true;
+//                                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                                intent.setData(Uri.parse("http://api.whatsapp.com/send?phone=91"+ todysTrns.get(position).getNumber() +"&text="+intro + subject[0] + concl));
+//                                ctx.startActivity(intent);
+//
+//                            }catch (Exception e){
+//
+//                                notif[0] = false;
+//
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
+
+                DatabaseReference transDbLoc = dbRef.child("TRANSACTIONS").child(user.getUid())
+                        .child(todysTrns.get(position).getNumber()).child(formattedTrnsYear).child(formattedTrnsMonth);
+                transDbLoc.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                        for(DataSnapshot snap: dataSnapshot.getChildren()) {
+                            for(DataSnapshot snap1: snap.getChildren()) {
+
+                                System.out.println("####################");
+                                System.out.println(snap1);
+                                Map<String, Object> val = (Map<String, Object>) snap1.getValue();
+                                String date = (String) val.get("date");
+                                String time = (String) val.get("time");
+                                String amount = (String) val.get("amount");
+                                String transType = (String) val.get("transType");
+                                String uname = (String) val.get("uname");
+                                String number = (String) val.get("number");
+                                String month = (String) val.get("month");
+                                String year = (String) val.get("year");
+                                String note = (String) val.get("note");
+                                String bill = (String) val.get("bill");
+                                String notified = (String) val.get("notified");
+
+                                System.out.println(amount);
+
+                                System.out.println("####################");
+                                credit += Float.valueOf(amount);
+//
+                                if(transType != null && notified !=null && transType.equals("credit") && notified.equals("false")){
+                                    subject[0] = subject[0] + " You bought for \u20B9" + amount + " on " + date + " at " + time + "\n"  ;
+                                    notifList.add(new Transaction(date,time,amount,transType,uname,number,month,year,note,bill,notified));
+                                }else if(transType != null && notified !=null && transType.equals("debit") && notified.equals("false")){
+                                    subject[0] = subject[0] + " You paid \u20B9" + amount + " on " + date + " at " + time + "\n"  ;
+                                    notifList.add(new Transaction(date,time,amount,transType,uname,number,month,year,note,bill,notified));
+                                }
+                            }
+
                         }
 
-                        if(subject[0].isEmpty() && notif[0] == false){
+                        if(subject[0].isEmpty() || notif[0] == true){
                             Toast.makeText(ctx, "All transactions are notified.", Toast.LENGTH_SHORT).show();
                         }else{
-                            notif[0] = true;
                             try{
+                                notif[0] = true;
 
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
                                 intent.setData(Uri.parse("http://api.whatsapp.com/send?phone=91"+ todysTrns.get(position).getNumber() +"&text="+intro + subject[0] + concl));
                                 ctx.startActivity(intent);
 
-                            }catch (Exception e){
 
+                            }catch (Exception e){
+                                notif[0] = false;
                             }
                         }
-                    }
-
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
                     }
 
                     @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    public void onCancelled(DatabaseError databaseError) {
 
                     }
                 });
-
-
-
             }
         });
 

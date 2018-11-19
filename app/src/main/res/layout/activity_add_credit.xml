@@ -11,7 +11,6 @@
 
 
     <RelativeLayout
-        android:id="@+id/r1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -82,7 +81,8 @@
                 android:layout_toStartOf="@+id/addItmBtn"
                 android:padding="2dp"
                 android:tint="@color/colorWhite"
-                app:srcCompat="@drawable/ic_calculator" />
+                app:srcCompat="@drawable/ic_calculator"
+                android:contentDescription="open calculator"/>
 
             <ImageView
                 android:id="@+id/addItmBtn"
@@ -92,10 +92,10 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="32dp"
                 android:tint="@color/colorWhite"
-                app:srcCompat="@drawable/ic_add_black_24px" />
+                app:srcCompat="@drawable/ic_add_black_24px"
+                android:contentDescription="add item to bucket"/>
 
             <TextView
-                android:id="@+id/textView20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"

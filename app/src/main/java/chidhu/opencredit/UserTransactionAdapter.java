@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -194,7 +195,7 @@ public class UserTransactionAdapter extends RecyclerView.Adapter<UserTransaction
                         File path = null;
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.FROYO) {
                             path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-                            File file = new File(path, "/" + transList.get(position).getTime()+".pdf");
+                            File file = new File(path, "/" +"Invoice_"+transList.get(position).getUname()+"_"+ transList.get(position).getDate()+"_"+transList.get(position).getTime()+".pdf");
                             System.out.println("Writing to"+ file.getAbsolutePath());
                             Document document = new Document();
                             PdfWriter.getInstance(document, new FileOutputStream(file));
@@ -214,8 +215,10 @@ public class UserTransactionAdapter extends RecyclerView.Adapter<UserTransaction
 
                             Toast.makeText(ctx, "File saved to your Documents folder", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                            Uri uri = FileProvider.getUriForFile(ctx,BuildConfig.APPLICATION_ID,file);
+                            intent.setDataAndType(uri, "application/pdf");
                             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                             ctx.startActivity(intent);
                         }
 
@@ -315,8 +318,7 @@ public class UserTransactionAdapter extends RecyclerView.Adapter<UserTransaction
         document.add(subPara);
     }
 
-    private static void createTable(Paragraph subCatPart,Transaction transaction)
-            throws BadElementException {
+    private static void createTable(Paragraph subCatPart,Transaction transaction) {
 
         Font font5pt = new Font(Font.FontFamily.TIMES_ROMAN, fontBig);
         Font font2pt = new Font(Font.FontFamily.TIMES_ROMAN, fontSmall);

@@ -69,12 +69,12 @@ public class TotalTransactionAdapter extends RecyclerView.Adapter<TotalTransacti
                 TextView amount = dialoglayout.findViewById(R.id.amountTxt);
                 TextView date = dialoglayout.findViewById(R.id.dateTxt);
                 TextView time = dialoglayout.findViewById(R.id.timeTxt);
-                TextView note = dialoglayout.findViewById(R.id.noteTxt);
+//                TextView note = dialoglayout.findViewById(R.id.noteTxt);
 //                ImageView bill = dialoglayout.findViewById(R.id.bilImg);
                 amount.setText("Rs." +todysTrns.get(position).getAmount());
                 date.setText(todysTrns.get(position).getDate());
                 time.setText(todysTrns.get(position).getTime());
-                note.setText(todysTrns.get(position).getNote());
+//                note.setText(todysTrns.get(position).getNote());
 
                 if(todysTrns.get(position).getBill() != null){
                     File imgFile = new File(todysTrns.get(position).getBill());

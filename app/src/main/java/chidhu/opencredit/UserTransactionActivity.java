@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -86,7 +87,7 @@ public class UserTransactionActivity extends AppCompatActivity {
     RecyclerView userTransList;
     RecyclerView.Adapter adapter;
     public OpenCreditDatabase opDB;
-    ArrayList<Transaction> userTrans = new ArrayList<>();;
+    ArrayList<Transaction> userTrans = new ArrayList<>();
     Date c;
     int credit=0, debit = 0, bal = 0;
     TextView balTxt;
@@ -382,16 +383,17 @@ public class UserTransactionActivity extends AppCompatActivity {
 
                                 File path = null;
                                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.FROYO) {
+
                                     path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-                                    File file = new File(path, "/" + userTrans.get(0).getUname() + ".pdf");
+                                    File file = new File(path, "/" +"Report_"+ userTrans.get(0).getUname()+"_"+billStatStrtDate+"-"+billStatEndDate + ".pdf");
                                     System.out.println("Writing to" + file.getAbsolutePath());
                                     Document document = new Document();
                                     PdfWriter.getInstance(document, new FileOutputStream(file));
-                                    //
+
                                     Rectangle one = new Rectangle(216, 360);
                                     document.setPageSize(one);
                                     document.setMargins(20, 20, 5, 20);
-                                    //
+
                                     document.open();
                                     addMetaData(document, userTrans);
                                     addTitlePage(document, userTrans);
@@ -401,8 +403,11 @@ public class UserTransactionActivity extends AppCompatActivity {
                                     document.close();
                                     Toast.makeText(getApplicationContext(), "File saved to your Documents folder", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                                    Uri uri = FileProvider.getUriForFile(getApplicationContext(),BuildConfig.APPLICATION_ID,file);
+                                    intent.setDataAndType(uri, "application/pdf");
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
                                     startActivity(intent);
                                 }
 
@@ -494,7 +499,7 @@ public class UserTransactionActivity extends AppCompatActivity {
         document.add(preface);
     }
 
-    private static void addContent(Document document,ArrayList<Transaction> transaction) throws DocumentException, IOException {
+    private static void addContent(Document document,ArrayList<Transaction> transaction) throws DocumentException {
 
 
 
@@ -512,8 +517,7 @@ public class UserTransactionActivity extends AppCompatActivity {
 
     }
 
-    private static void createTable(Paragraph subCatPart,ArrayList<Transaction> transaction)
-            throws DocumentException, IOException {
+    private static void createTable(Paragraph subCatPart,ArrayList<Transaction> transaction) {
 
         Font font5pt = new Font(Font.FontFamily.TIMES_ROMAN, fontBig);
         Font font2pt = new Font(Font.FontFamily.TIMES_ROMAN, fontSmall);

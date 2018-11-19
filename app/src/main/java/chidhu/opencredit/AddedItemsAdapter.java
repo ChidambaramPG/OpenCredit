@@ -66,7 +66,7 @@ public class AddedItemsAdapter extends RecyclerView.Adapter<AddedItemsAdapter.My
     }
 
     public interface OnDataChangeListener{
-        public void onDataChanged(ArrayList<BillingItems> items);
+        void onDataChanged(ArrayList<BillingItems> items);
     }
     OnDataChangeListener mOnDataChangeListener;
     public void setOnDataChangeListener(OnDataChangeListener onDataChangeListener){
